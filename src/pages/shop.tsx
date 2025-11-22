@@ -1,11 +1,29 @@
 import type { NextPage } from "next";
 import type { ComponentProps } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import choco from "../../public/choco-cookie.png";
+import lemon from "../../public/lemon.png";
+import sweetPotato from "../../public/sweet-potato.png";
+import yangGang from "../../public/yang-gang.png";
+import chocolate from "../../public/chocolate.png";
+import strawberry from "../../public/strawberry.png";
+import jelly from "../../public/jelly.png";
+import creamBrulee from "../../public/cream-brulee.png";
+import castella from "../../public/castella.png";
+import soda from "../../public/soda.png";
+import bento from "../../public/bento.png";
+import grill from "../../public/grill.png";
+import applePie from "../../public/apple-pie.png";
+import kiwi from "../../public/kiwi.png";
 
 import { BottomBar } from "~/components/BottomBar";
 import { LeftBar } from "~/components/LeftBar";
 import { RightBar } from "~/components/RightBar";
 import { TopBar } from "~/components/TopBar";
+import { GemSvg, DoneSvg } from "~/components/Svgs";
+import { useBoundStore } from "~/hooks/useBoundStore";
+import Link from "next/link";
 
 const StreakFreezeSvg = (props: ComponentProps<"svg">) => {
   return (
@@ -338,6 +356,46 @@ const DuoPlushieSvg = (props: ComponentProps<"svg">) => {
 
 const Shop: NextPage = () => {
   const streakFreezes = 0;
+  const lingots = useBoundStore((x) => x.lingots);
+  const decreaseLingots = useBoundStore((x) => x.decreaseLingots);
+  
+  // 구매한 아이템 목록 (로컬 스토리지에서 불러오기)
+  const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  useEffect(() => {
+    // 로컬 스토리지에서 구매한 아이템 불러오기
+    const stored = localStorage.getItem("purchasedItems");
+    if (stored) {
+      setPurchasedItems(new Set(JSON.parse(stored)));
+    }
+  }, []);
+
+  const handlePurchase = (itemId: string, itemName: string, price: number) => {
+    if (purchasedItems.has(itemId)) {
+      return; // 이미 구매한 아이템
+    }
+    
+    if (lingots < price) {
+      setToastMessage("루비가 부족합니다!");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+      return;
+    }
+
+    // 구매 처리
+    decreaseLingots(price);
+    const newPurchased = new Set(purchasedItems);
+    newPurchased.add(itemId);
+    setPurchasedItems(newPurchased);
+    localStorage.setItem("purchasedItems", JSON.stringify(Array.from(newPurchased)));
+    
+    // 구매 완료 토스트
+    setToastMessage(`${itemName} 구매 완료!`);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
 
   return (
     <div>
@@ -345,6 +403,15 @@ const Shop: NextPage = () => {
       <LeftBar selectedTab="Shop" />
       <div className="flex justify-center gap-3 pt-14 sm:p-6 sm:pt-10 md:ml-24 lg:ml-64 lg:gap-12">
         <div className="px-4 pb-20">
+          <div className="mb-5 flex items-center justify-between">
+            <h1 className="text-3xl font-bold">상점</h1>
+            <Link
+              href="/inventory"
+              className="flex items-center gap-2 rounded-2xl border-2 border-b-4 border-green-500 bg-green-400 px-4 py-2 text-sm font-bold uppercase text-white transition hover:brightness-105"
+            >
+              <DoneSvg className="h-5 w-5" /> 내 아이템 보기
+            </Link>
+          </div>
           <div className="py-7">
             <h2 className="mb-5 text-2xl font-bold">Power-ups</h2>
             <div className="flex border-t-2 border-gray-300 py-5">
@@ -386,15 +453,384 @@ const Shop: NextPage = () => {
           <div className="py-7">
             <h2 className="mb-5 text-2xl font-bold">Merch</h2>
             <div className="flex border-t-2 border-gray-300 py-5">
-              <DuoPlushieSvg className="h-32 w-32 shrink-0 p-4" />
+              <Image src={yangGang} alt="양갱 에디션" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
               <section className="flex flex-col gap-3">
-                <h3 className="text-lg font-bold">Duo Plushie</h3>
-                <p className="text-sm text-gray-500">
-                  {`Celebrate Duolingo's 10 year anniversary with a new exclusive Duo plushie!`}
-                </p>
-                <button className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-gray-300 bg-white px-4 py-3 text-sm font-bold uppercase text-red-500">
-                  $29.99
-                </button>
+                <h3 className="text-lg font-bold">양갱 에디션</h3>
+                <p className="text-sm text-gray-500">쫀득한 달콤함, 스터디 타임 필수템!</p>
+                {purchasedItems.has("yangGang") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("yangGang", "양갱 에디션", 5)}
+                    disabled={lingots < 5}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 5
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 5
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={choco} alt="초코쿠키 에디션" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">초코쿠키 에디션</h3>
+                <p className="text-sm text-gray-500">달달한 보상으로 동기부여 업!</p>
+                {purchasedItems.has("choco") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("choco", "초코쿠키 에디션", 6)}
+                    disabled={lingots < 6}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 6
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 6
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={sweetPotato} alt="군고구마 에디션" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">군고구마 에디션</h3>
+                <p className="text-sm text-gray-500">따뜻한 달콤함으로 공부 집중!</p>
+                {purchasedItems.has("sweetPotato") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("sweetPotato", "군고구마 에디션", 7)}
+                    disabled={lingots < 7}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 7
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 7
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={lemon} alt="레몬 에디션" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">레몬 에디션</h3>
+                <p className="text-sm text-gray-500">상큼한 집중력 부스터!</p>
+                {purchasedItems.has("lemon") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("lemon", "레몬 에디션", 4)}
+                    disabled={lingots < 4}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 4
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 4
+                  </button>
+                )}
+              </section>
+            </div>
+          </div>
+          <div className="py-7">
+            <h2 className="mb-5 text-2xl font-bold">Food</h2>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={chocolate} alt="초콜릿" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">초콜릿</h3>
+                <p className="text-sm text-gray-500">달콤한 에너지 충전!</p>
+                {purchasedItems.has("chocolate") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("chocolate", "초콜릿", 4)}
+                    disabled={lingots < 4}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 4
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 4
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={strawberry} alt="딸기" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">딸기</h3>
+                <p className="text-sm text-gray-500">상큼한 비타민 부스터!</p>
+                {purchasedItems.has("strawberry") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("strawberry", "딸기", 5)}
+                    disabled={lingots < 5}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 5
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 5
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={jelly} alt="젤리" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">젤리</h3>
+                <p className="text-sm text-gray-500">쫀득한 식감의 달콤함!</p>
+                {purchasedItems.has("jelly") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("jelly", "젤리", 3)}
+                    disabled={lingots < 3}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 3
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 3
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={creamBrulee} alt="크렘 브륄레" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">크렘 브륄레</h3>
+                <p className="text-sm text-gray-500">고급스러운 디저트!</p>
+                {purchasedItems.has("creamBrulee") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("creamBrulee", "크렘 브륄레", 8)}
+                    disabled={lingots < 8}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 8
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 8
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={castella} alt="카스테라" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">카스테라</h3>
+                <p className="text-sm text-gray-500">부드러운 한입 케이크!</p>
+                {purchasedItems.has("castella") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("castella", "카스테라", 6)}
+                    disabled={lingots < 6}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 6
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 6
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={soda} alt="소다" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">소다</h3>
+                <p className="text-sm text-gray-500">시원한 탄산 음료!</p>
+                {purchasedItems.has("soda") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("soda", "소다", 3)}
+                    disabled={lingots < 3}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 3
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 3
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={bento} alt="도시락" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">도시락</h3>
+                <p className="text-sm text-gray-500">영양 만점 한끼 식사!</p>
+                {purchasedItems.has("bento") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("bento", "도시락", 9)}
+                    disabled={lingots < 9}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 9
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 9
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={grill} alt="그릴" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">그릴</h3>
+                <p className="text-sm text-gray-500">고소한 바베큐 맛!</p>
+                {purchasedItems.has("grill") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("grill", "그릴", 7)}
+                    disabled={lingots < 7}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 7
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 7
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={applePie} alt="사과파이" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">사과파이</h3>
+                <p className="text-sm text-gray-500">따뜻한 홈메이드 디저트!</p>
+                {purchasedItems.has("applePie") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("applePie", "사과파이", 7)}
+                    disabled={lingots < 7}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 7
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 7
+                  </button>
+                )}
+              </section>
+            </div>
+            <div className="flex border-t-2 border-gray-300 py-5">
+              <Image src={kiwi} alt="키위" className="h-32 w-32 shrink-0 rounded-xl object-cover" />
+              <section className="flex flex-col gap-3">
+                <h3 className="text-lg font-bold">키위</h3>
+                <p className="text-sm text-gray-500">상큼한 비타민C 폭탄!</p>
+                {purchasedItems.has("kiwi") ? (
+                  <button
+                    disabled
+                    className="flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 border-green-300 bg-green-100 px-4 py-3 text-sm font-bold uppercase text-green-600"
+                  >
+                    <DoneSvg className="h-5 w-5" /> 보유 중
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePurchase("kiwi", "키위", 4)}
+                    disabled={lingots < 4}
+                    className={`flex w-fit items-center gap-1 rounded-2xl border-2 border-b-4 px-4 py-3 text-sm font-bold uppercase ${
+                      lingots >= 4
+                        ? "border-gray-300 bg-white text-red-500 hover:bg-gray-50"
+                        : "border-gray-200 bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    <GemSvg /> 4
+                  </button>
+                )}
               </section>
             </div>
           </div>
@@ -402,6 +838,13 @@ const Shop: NextPage = () => {
         <RightBar />
       </div>
       <BottomBar selectedTab="Shop" />
+      
+      {/* 구매 완료 토스트 메시지 */}
+      {showToast && (
+        <div className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 transform rounded-2xl border-2 border-b-4 border-green-500 bg-green-400 px-6 py-4 text-center font-bold text-white shadow-lg transition-all duration-300">
+          {toastMessage}
+        </div>
+      )}
     </div>
   );
 };

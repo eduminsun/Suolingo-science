@@ -1,6 +1,12 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import choco from "../../public/choco-cookie.png";
+import lemon from "../../public/lemon.png";
+import sweetPotato from "../../public/sweet-potato.png";
+import yangGang from "../../public/yang-gang.png";
+import soda from "../../public/soda.png";
 import {
   ActiveBookSvg,
   LockedBookSvg,
@@ -39,7 +45,7 @@ import { units } from "~/utils/units";
 type TileStatus = "LOCKED" | "ACTIVE" | "COMPLETE";
 
 const tileStatus = (tile: Tile, lessonsCompleted: number): TileStatus => {
-  const lessonsPerTile = 4;
+  const lessonsPerTile = 1;
   const tilesCompleted = Math.floor(lessonsCompleted / lessonsPerTile);
   const tiles = units.flatMap((unit) => unit.tiles);
   const tileIndex = tiles.findIndex((t) => t === tile);
@@ -174,6 +180,22 @@ const getTileTooltipLeftOffset = ({
   return offsets[index % offsets.length] ?? tileTooltipLeftOffsets[0];
 };
 
+// borderColor 클래스명에서 실제 색상 코드 추출
+const getBorderColorFromClassName = (borderColorClass: string): string => {
+  // border-[#46a302] -> #46a302
+  const match = borderColorClass.match(/\[#([0-9a-fA-F]{6})\]/);
+  if (match) {
+    return `#${match[1]}`;
+  }
+  // 기본 색상 매핑
+  const colorMap: Record<string, string> = {
+    "border-[#46a302]": "#46a302",
+    "border-[#a568cc]": "#a568cc",
+    "border-[#00a47d]": "#00a47d",
+  };
+  return colorMap[borderColorClass] || "#46a302";
+};
+
 const getTileColors = ({
   tileType,
   status,
@@ -190,7 +212,9 @@ const getTileColors = ({
     case "COMPLETE":
       return "border-yellow-500 bg-yellow-400";
     case "ACTIVE":
-      return defaultColors;
+      // 원 내부 색상은 단위별 색상 유지, 테두리만 회색으로
+      const [borderColor, bgColor] = defaultColors.split(" ");
+      return `border-gray-300 ${bgColor}` as `border-${string} bg-${string}`;
   }
 };
 
@@ -199,6 +223,7 @@ const TileTooltip = ({
   index,
   unitNumber,
   tilesLength,
+  tileType,
   description,
   status,
   closeTooltip,
@@ -207,6 +232,7 @@ const TileTooltip = ({
   index: number;
   unitNumber: number;
   tilesLength: number;
+  tileType: TileType;
   description: string;
   status: TileStatus;
   closeTooltip: () => void;
@@ -230,6 +256,16 @@ const TileTooltip = ({
   const unit = units.find((unit) => unit.unitNumber === unitNumber);
   const activeBackgroundColor = unit?.backgroundColor ?? "bg-green-500";
   const activeTextColor = unit?.textColor ?? "text-green-500";
+
+  // Unit 1의 첫 번째 별(star)이면 step=1, 두 번째 book이면 step=2, 세 번째 star이면 step=3
+  const getStepParam = () => {
+    if (unitNumber === 1) {
+      if (index === 0 && tileType === "star") return "?step=1";
+      if (index === 1 && tileType === "book") return "?step=2";
+      if (index === 2 && tileType === "star") return "?step=3";
+    }
+    return "";
+  };
 
   return (
     <div
@@ -278,7 +314,7 @@ const TileTooltip = ({
         </div>
         {status === "ACTIVE" ? (
           <Link
-            href="/lesson"
+            href={`/lesson${getStepParam()}`}
             className={[
               "flex w-full items-center justify-center rounded-xl border-b-4 border-gray-200 bg-white p-3 uppercase",
               activeTextColor,
@@ -295,7 +331,7 @@ const TileTooltip = ({
           </button>
         ) : (
           <Link
-            href="/lesson"
+            href={`/lesson${getStepParam()}`}
             className="flex w-full items-center justify-center rounded-xl border-b-4 border-yellow-200 bg-white p-3 uppercase text-yellow-400"
           >
             Practice +5 XP
@@ -377,16 +413,25 @@ const UnitSection = ({ unit }: { unit: Unit }): JSX.Element => {
                         <LessonCompletionSvg
                           lessonsCompleted={lessonsCompleted}
                           status={status}
+                          tileIndex={units.flatMap((u) => u.tiles).findIndex((t) => t === tile)}
                         />
                         <button
                           className={[
-                            "absolute m-3 rounded-full border-b-8 p-4",
+                            "absolute m-3 rounded-full p-4",
                             getTileColors({
                               tileType: tile.type,
                               status,
                               defaultColors: `${unit.borderColor} ${unit.backgroundColor}`,
                             }),
+                            status === "ACTIVE" ? "" : "border-b-8",
                           ].join(" ")}
+                          style={
+                            status === "ACTIVE"
+                              ? {
+                                  boxShadow: `0 8px 0 ${getBorderColorFromClassName(unit.borderColor)}`,
+                                }
+                              : undefined
+                          }
                           onClick={() => {
                             if (
                               tile.type === "fast-forward" &&
@@ -440,6 +485,7 @@ const UnitSection = ({ unit }: { unit: Unit }): JSX.Element => {
                 index={i}
                 unitNumber={unit.unitNumber}
                 tilesLength={unit.tiles.length}
+                tileType={tile.type}
                 description={(() => {
                   switch (tile.type) {
                     case "book":
@@ -487,16 +533,53 @@ const getTopBarColors = (
   }
 };
 
+// 선택 가능한 아이템 정보 (캐릭터 + 소다)
+const selectableItems: Record<
+  string,
+  { name: string; image: typeof yangGang }
+> = {
+  yangGang: {
+    name: "양갱 에디션",
+    image: yangGang,
+  },
+  choco: {
+    name: "초코쿠키 에디션",
+    image: choco,
+  },
+  sweetPotato: {
+    name: "군고구마 에디션",
+    image: sweetPotato,
+  },
+  lemon: {
+    name: "레몬 에디션",
+    image: lemon,
+  },
+  soda: {
+    name: "소다",
+    image: soda,
+  },
+};
+
 const Learn: NextPage = () => {
   const { loginScreenState, setLoginScreenState } = useLoginScreen();
 
   const [scrollY, setScrollY] = useState(0);
+  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
+
   useEffect(() => {
     const updateScrollY = () => setScrollY(globalThis.scrollY ?? scrollY);
     updateScrollY();
     document.addEventListener("scroll", updateScrollY);
     return () => document.removeEventListener("scroll", updateScrollY);
   }, [scrollY]);
+
+  // localStorage에서 선택된 아이템 가져오기
+  useEffect(() => {
+    const savedItem = localStorage.getItem("selectedCharacter");
+    if (savedItem && Object.keys(selectableItems).includes(savedItem)) {
+      setSelectedCharacter(savedItem);
+    }
+  }, []);
 
   const topBarColors = getTopBarColors(scrollY);
 
@@ -513,17 +596,29 @@ const Learn: NextPage = () => {
           {units.map((unit) => (
             <UnitSection unit={unit} key={unit.unitNumber} />
           ))}
-          <div className="sticky bottom-28 left-0 right-0 flex items-end justify-between">
-            <Link
-              href="/lesson?practice"
-              className="absolute left-4 flex h-16 w-16 items-center justify-center rounded-full border-2 border-b-4 border-gray-200 bg-white transition hover:bg-gray-50 hover:brightness-90 md:left-0"
-            >
-              <span className="sr-only">Practice exercise</span>
-              <PracticeExerciseSvg className="h-8 w-8" />
-            </Link>
+          <div className="sticky bottom-40 left-0 right-0 z-40 flex items-end justify-between sm:bottom-28 md:bottom-28">
+            <div className="relative character-selector-container">
+              <Link
+                href="/inventory"
+                className="absolute left-4 z-50 flex h-16 w-16 items-center justify-center rounded-full border-2 border-b-4 border-gray-200 bg-white transition hover:bg-gray-50 hover:brightness-90 md:left-0"
+              >
+                <span className="sr-only">Practice exercise</span>
+                {selectedCharacter && selectableItems[selectedCharacter] ? (
+                  <Image
+                    src={selectableItems[selectedCharacter].image}
+                    alt={selectableItems[selectedCharacter].name}
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover"
+                  />
+                ) : (
+                  <PracticeExerciseSvg className="h-8 w-8" />
+                )}
+              </Link>
+            </div>
             {scrollY > 100 && (
               <button
-                className="absolute right-4 flex h-14 w-14 items-center justify-center self-end rounded-2xl border-2 border-b-4 border-gray-200 bg-white transition hover:bg-gray-50 hover:brightness-90 md:right-0"
+                className="absolute right-4 z-50 flex h-14 w-14 items-center justify-center self-end rounded-2xl border-2 border-b-4 border-gray-200 bg-white transition hover:bg-gray-50 hover:brightness-90 md:right-0"
                 onClick={() => scrollTo(0, 0)}
               >
                 <span className="sr-only">Jump to top</span>
@@ -551,16 +646,25 @@ export default Learn;
 const LessonCompletionSvg = ({
   lessonsCompleted,
   status,
+  tileIndex,
   style = {},
 }: {
   lessonsCompleted: number;
   status: TileStatus;
+  tileIndex: number;
   style?: React.HTMLAttributes<SVGElement>["style"];
 }) => {
   if (status !== "ACTIVE") {
     return null;
   }
-  switch (lessonsCompleted % 4) {
+  // 현재 타일이 아직 시작하지 않았을 때는 진행 표시를 보여주지 않음
+  // lessonsPerTile = 1이므로, tileIndex === lessonsCompleted이면 아직 시작하지 않음
+  if (tileIndex === lessonsCompleted) {
+    return null;
+  }
+  // 타일 내에서의 진행도 (0~3)
+  const progressInTile = lessonsCompleted % 4;
+  switch (progressInTile) {
     case 0:
       return <LessonCompletionSvg0 style={style} />;
     case 1:

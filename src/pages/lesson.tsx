@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AppleSvg,
   BigCloseSvg,
@@ -15,32 +15,169 @@ import {
   LessonTopBarHeart,
   WomanSvg,
 } from "~/components/Svgs";
-import womanPng from "../../public/woman.png";
+import summerPng from "../../public/summer.png";
+import chromatographyImg from "../../public/chromatography.png";
+import celebrationPng from "../../public/celebration.png";
 import { useBoundStore } from "~/hooks/useBoundStore";
 import { useRouter } from "next/router";
 
+// 과학 OX 1: 고체 용해도와 압력
 const lessonProblem1 = {
   type: "SELECT_1_OF_3",
-  question: `Which one of these is "the apple"?`,
+  question: `고체의 용해도는 압력이 높을수록 높아진다. (O/X)`,
   answers: [
-    { icon: <AppleSvg />, name: "la manzana" },
-    { icon: <BoySvg />, name: "el niño" },
-    { icon: <WomanSvg />, name: "la mujer" },
+    { icon: <></>, name: "O" },
+    { icon: <></>, name: "X" },
   ],
+  // 고체의 용해도는 압력 영향이 거의 없음 → X가 정답
+  correctAnswer: 1,
+} as const;
+
+// 과학 빈칸 2: 소줏고리 증류 과정
+const lessonProblem2 = {
+  type: "WRITE_IN_ENGLISH",
+  question:
+    "소줏고리에 탁한 술을 넣고 가열하면 끓는점이 ( ㄱ ) 에탄올이 먼저 ( ㄴ ) 되어 끓어 나온다. 이 기체 물질이 찬물이 담긴 그릇에 닿으면 ( ㄷ ) 되어 소주가 소줏고리 가지를 따라 흘러나온다.",
+  // 타일에서 순서대로 ㄱ, ㄴ, ㄷ을 선택
+  answerTiles: ["낮은", "높은", "기화", "액화", "응고"],
+  // ㄱ=낮은, ㄴ=기화, ㄷ=액화
+  correctAnswer: [0, 2, 3],
+} as const;
+
+// 과학 OX 3: 용매에 따른 용해도
+const lessonProblem3 = {
+  type: "SELECT_1_OF_3",
+  question: `같은 물질이면 용매의 종류에 관계없이 용해도가 같다. (O/X)`,
+  answers: [
+    { icon: <></>, name: "O" },
+    { icon: <></>, name: "X" },
+  ],
+  // 용해도는 용매 종류에 따라 다름 → X가 정답
+  correctAnswer: 1,
+} as const;
+
+// 과학 OX 4-8: 크로마토그래피 실험 (5개 OX 문제)
+const lessonProblem4 = {
+  type: "SELECT_1_OF_3",
+  question: `다음 그림을 보고 문제를 풀어보세요. 사인펜 잉크는 최대한 작게, 여러 번, 진하게 찍는다. 이 말은 맞을까요?`,
+  answers: [
+    { icon: <></>, name: "O" },
+    { icon: <></>, name: "X" },
+  ],
+  // 사인펜 잉크는 최대한 작게, 여러 번, 진하게 찍어야 함 → O가 정답
+  correctAnswer: 0,
+  image: chromatographyImg,
+} as const;
+
+const lessonProblem5 = {
+  type: "SELECT_1_OF_3",
+  question: `다음 그림을 보고 문제를 풀어보세요. 사인펜 잉크를 찍은 점이 물에 잠기게 장치한다. 이 말은 맞을까요?`,
+  answers: [
+    { icon: <></>, name: "O" },
+    { icon: <></>, name: "X" },
+  ],
+  // 잉크 점은 물 수면보다 위에 있어야 함 → X가 정답
+  correctAnswer: 1,
+  image: chromatographyImg,
+} as const;
+
+const lessonProblem6 = {
+  type: "SELECT_1_OF_3",
+  question: `다음 그림을 보고 문제를 풀어보세요. 용매의 증발을 막기 위해 용기의 입구를 막는다. 이 말은 맞을까요?`,
+  answers: [
+    { icon: <></>, name: "O" },
+    { icon: <></>, name: "X" },
+  ],
+  // 용매의 증발을 막기 위해 용기 입구를 막아야 함 → O가 정답
+  correctAnswer: 0,
+  image: chromatographyImg,
+} as const;
+
+const lessonProblem7 = {
+  type: "SELECT_1_OF_3",
+  question: `다음 그림을 보고 문제를 풀어보세요. 가장 아래쪽에 분리되는 색소의 이동 속도가 가장 빠르다. 이 말은 맞을까요?`,
+  answers: [
+    { icon: <></>, name: "O" },
+    { icon: <></>, name: "X" },
+  ],
+  // 이동 속도가 빠른 색소가 더 멀리 이동하므로 아래쪽 색소가 가장 느림 → X가 정답
+  correctAnswer: 1,
+  image: chromatographyImg,
+} as const;
+
+const lessonProblem8 = {
+  type: "SELECT_1_OF_3",
+  question: `다음 그림을 보고 문제를 풀어보세요. 물 대신 에탄올을 사용해도 실험 결과는 같다. 이 말은 맞을까요?`,
+  answers: [
+    { icon: <></>, name: "O" },
+    { icon: <></>, name: "X" },
+  ],
+  // 용매에 따라 분리 결과가 다름 → X가 정답
+  correctAnswer: 1,
+  image: chromatographyImg,
+} as const;
+
+// 과학 빈칸 9: 소금, 에탄올, 물, 모래 분리 과정 (Problem 12 기반)
+const lessonProblem9 = {
+  type: "WRITE_IN_ENGLISH",
+  question:
+    "수오의 마법 실험실! 소금, 에탄올, 물, 모래가 섞인 혼합물을 분리해보자! 먼저 거름을 하면 ( ㄱ )를 분리할 수 있어. 그 다음 남은 용액을 증류하면 끓는점이 낮은 ( ㄴ )이 먼저 나와. 마지막으로 끓는점으로 분류되지 않은 용액을 증발시키면 ( ㄷ )을 얻을 수 있지!",
+  answerTiles: ["모래", "에탄올", "소금", "물", "소금물"],
+  // ㄱ=거름, ㄴ=증류, ㄷ=증발
+  correctAnswer: [0, 1, 2],
+} as const;
+
+// 과학 MCQ 10: 소금물에서 물 얻기 (Problem 11 기반)
+const lessonProblem10 = {
+  type: "SELECT_1_OF_3",
+  question: `다음 중 소금물에서 깨끗한 물을 얻는 데 가장 적합한 실험 장치는 무엇일까?`,
+  answers: [
+    { icon: <></>, name: "(가) 증류 장치" },
+    { icon: <></>, name: "(나) 분별 깔때기" },
+    { icon: <></>, name: "(다) 거름 장치" },
+  ],
+  // (가) 증류 장치가 정답
   correctAnswer: 0,
 } as const;
 
-const lessonProblem2 = {
-  type: "WRITE_IN_ENGLISH",
-  question: "El niño",
-  answerTiles: ["woman", "milk", "water", "I", "The", "boy"],
-  correctAnswer: [4, 5],
+// 과학 OX 11: 크로마토그래피 원리 이용 (Problem 09 기반)
+const lessonProblem11 = {
+  type: "SELECT_1_OF_3",
+  question: `크로마토그래피의 원리를 이용하여 혼합물을 분리하는 예가 아닌 것은?`,
+  answers: [
+    { icon: <></>, name: "도핑 테스트" },
+    { icon: <></>, name: "시금치 잎의 색소 분리" },
+    { icon: <></>, name: "바닷물에서 식수 분리" },
+    { icon: <></>, name: "의약품의 성분 검출" },
+    { icon: <></>, name: "식품 속 농약 성분 검출" },
+  ],
+  // 바닷물에서 식수 분리 증류는 크로마토그래피가 아님 → 정답
+  correctAnswer: 2,
 } as const;
 
-const lessonProblems = [lessonProblem1, lessonProblem2];
+// 단계별 문제 그룹
+const lessonProblemsStep1 = [lessonProblem1, lessonProblem2, lessonProblem3];
+const lessonProblemsStep2 = [lessonProblem4, lessonProblem5, lessonProblem6, lessonProblem7, lessonProblem8];
+const lessonProblemsStep3 = [lessonProblem9, lessonProblem10, lessonProblem11];
 
 const numbersEqual = (a: readonly number[], b: readonly number[]): boolean => {
   return a.length === b.length && a.every((_, i) => a[i] === b[i]);
+};
+
+// Problem type definitions (relaxed to allow multiple instances)
+type Select1Of3Problem = {
+  type: "SELECT_1_OF_3";
+  question: string;
+  answers: readonly { icon: React.JSX.Element; name: string }[];
+  correctAnswer: number;
+  image?: any; // StaticImageData from next/image
+};
+
+type WriteInEnglishProblem = {
+  type: "WRITE_IN_ENGLISH";
+  question: string;
+  answerTiles: readonly string[];
+  correctAnswer: readonly number[];
 };
 
 const formatTime = (timeMs: number): string => {
@@ -74,9 +211,28 @@ const Lesson: NextPage = () => {
   const [questionResults, setQuestionResults] = useState<QuestionResult[]>([]);
   const [reviewLessonShown, setReviewLessonShown] = useState(false);
 
-  const problem = lessonProblems[lessonProblem] ?? lessonProblem1;
+  // 라우터 쿼리에서 step 파라미터 읽기 (기본값: 1)
+  const step = Number(router.query.step) || 1;
+  const lessonProblems = 
+    step === 3 ? lessonProblemsStep3 :
+    step === 2 ? lessonProblemsStep2 :
+    lessonProblemsStep1;
 
-  const totalCorrectAnswersNeeded = 2;
+  // step이 바뀌면 문제 인덱스를 0으로 리셋
+  useEffect(() => {
+    setLessonProblem(0);
+    setCorrectAnswerCount(0);
+    setIncorrectAnswerCount(0);
+    setSelectedAnswer(null);
+    setSelectedAnswers([]);
+    setCorrectAnswerShown(false);
+    setQuestionResults([]);
+  }, [step]);
+
+  const problem = lessonProblems[lessonProblem] ?? lessonProblems[0];
+
+  // Show all problems (complete after answering all correctly once)
+  const totalCorrectAnswersNeeded = lessonProblems.length;
 
   const [isStartingLesson, setIsStartingLesson] = useState(true);
   const hearts =
@@ -85,12 +241,17 @@ const Lesson: NextPage = () => {
       ? 3 - incorrectAnswerCount
       : null;
 
+  if (!problem) {
+    return <div>문제를 불러올 수 없습니다.</div>;
+  }
+
   const { correctAnswer } = problem;
   const isAnswerCorrect = Array.isArray(correctAnswer)
     ? numbersEqual(selectedAnswers, correctAnswer)
     : selectedAnswer === correctAnswer;
 
   const onCheckAnswer = () => {
+    if (!problem) return;
     setCorrectAnswerShown(true);
     if (isAnswerCorrect) {
       setCorrectAnswerCount((x) => x + 1);
@@ -107,10 +268,10 @@ const Lesson: NextPage = () => {
             : selectedAnswers.map((i) => problem.answerTiles[i]).join(" "),
         correctResponse:
           problem.type === "SELECT_1_OF_3"
-            ? problem.answers[problem.correctAnswer].name
-            : problem.correctAnswer
-                .map((i) => problem.answerTiles[i])
-                .join(" "),
+            ? problem.answers[problem.correctAnswer]?.name ?? ""
+            : Array.isArray(problem.correctAnswer)
+            ? problem.correctAnswer.map((i) => problem.answerTiles[i]).join(" ")
+            : "",
       },
     ]);
   };
@@ -443,7 +604,7 @@ const ProblemSelect1Of3 = ({
   onSkip,
   hearts,
 }: {
-  problem: typeof lessonProblem1;
+  problem: Select1Of3Problem;
   correctAnswerCount: number;
   totalCorrectAnswersNeeded: number;
   selectedAnswer: number | null;
@@ -457,7 +618,17 @@ const ProblemSelect1Of3 = ({
   onSkip: () => void;
   hearts: number | null;
 }) => {
-  const { question, answers, correctAnswer } = problem;
+  const { question, answers, correctAnswer, image } = problem;
+
+  // 이미지가 있는 경우 question을 분리
+  const imagePrefix = "다음 그림을 보고 문제를 풀어보세요.";
+  let questionTitle = "";
+  let questionBody = question;
+  
+  if (image && question.startsWith(imagePrefix)) {
+    questionTitle = imagePrefix;
+    questionBody = question.slice(imagePrefix.length).trim();
+  }
 
   return (
     <div className="flex min-h-screen flex-col gap-5 px-4 py-5 sm:px-0 sm:py-0">
@@ -471,9 +642,34 @@ const ProblemSelect1Of3 = ({
           />
         </div>
         <section className="flex max-w-2xl grow flex-col gap-5 self-center sm:items-center sm:justify-center sm:gap-24 sm:px-5">
-          <h1 className="self-start text-2xl font-bold sm:text-3xl">
-            {question}
-          </h1>
+          {image ? (
+            <>
+              {/* 이미지가 있는 경우: 제목은 위, 이미지, 본문은 아래 */}
+              {questionTitle && (
+                <h1 className="self-start text-xl font-bold sm:text-2xl">
+                  {questionTitle}
+                </h1>
+              )}
+              <div className="flex flex-col items-center gap-3">
+                <Image
+                  src={image}
+                  alt="크로마토그래피 실험 장치"
+                  width={300}
+                  height={375}
+                  className="rounded-lg"
+                />
+                {questionBody && (
+                  <p className="text-lg font-semibold sm:text-xl">
+                    {questionBody}
+                  </p>
+                )}
+              </div>
+            </>
+          ) : (
+            <h1 className="self-start text-2xl font-bold sm:text-3xl">
+              {question}
+            </h1>
+          )}
           <div
             className="grid grid-cols-2 gap-2 sm:grid-cols-3"
             role="radiogroup"
@@ -502,7 +698,7 @@ const ProblemSelect1Of3 = ({
       </div>
 
       <CheckAnswer
-        correctAnswer={answers[correctAnswer].name}
+        correctAnswer={answers[correctAnswer]?.name ?? ""}
         correctAnswerShown={correctAnswerShown}
         isAnswerCorrect={isAnswerCorrect}
         isAnswerSelected={selectedAnswer !== null}
@@ -534,7 +730,7 @@ const ProblemWriteInEnglish = ({
   onSkip,
   hearts,
 }: {
-  problem: typeof lessonProblem2;
+  problem: WriteInEnglishProblem;
   correctAnswerCount: number;
   totalCorrectAnswersNeeded: number;
   selectedAnswers: number[];
@@ -563,12 +759,12 @@ const ProblemWriteInEnglish = ({
         </div>
         <section className="flex max-w-2xl grow flex-col gap-5 self-center sm:items-center sm:justify-center sm:gap-24">
           <h1 className="mb-2 text-2xl font-bold sm:text-3xl">
-            Write this in English
+            다음 빈칸에 들어갈 말을 순서대로 고르시오 (ㄱ, ㄴ, ㄷ)
           </h1>
 
           <div className="w-full">
             <div className="flex items-center gap-2 px-2">
-              <Image src={womanPng} alt="" width={92} height={115} />
+              <Image src={summerPng} alt="" width={92} height={115} />
               <div className="relative ml-2 w-fit rounded-2xl border-2 border-gray-200 p-4">
                 {question}
                 <div
@@ -664,6 +860,7 @@ const LessonComplete = ({
 }) => {
   const router = useRouter();
   const isPractice = "practice" in router.query;
+  const step = Number(router.query.step) || 1;
 
   const increaseXp = useBoundStore((x) => x.increaseXp);
   const addToday = useBoundStore((x) => x.addToday);
@@ -674,9 +871,22 @@ const LessonComplete = ({
   return (
     <div className="flex min-h-screen flex-col gap-5 px-4 py-5 sm:px-0 sm:py-0">
       <div className="flex grow flex-col items-center justify-center gap-8 font-bold">
-        <h1 className="text-center text-3xl text-yellow-400">
-          Lesson Complete!
-        </h1>
+        {/* 축하 이미지와 메시지 */}
+        <div className="flex flex-col items-center gap-4">
+          <Image
+            src={celebrationPng}
+            alt="축하"
+            width={200}
+            height={200}
+            className="rounded-lg"
+          />
+          <h1 className="text-center text-3xl text-yellow-400 sm:text-4xl">
+            잘했어요! 🎉
+          </h1>
+          <p className="text-center text-xl text-gray-600 sm:text-2xl">
+            Step {step} 완료!
+          </p>
+        </div>
         <div className="flex flex-wrap justify-center gap-5">
           <div className="min-w-[110px] rounded-xl border-2 border-yellow-400 bg-yellow-400">
             <h2 className="py-1 text-center text-white">Total XP</h2>
@@ -721,7 +931,8 @@ const LessonComplete = ({
               addToday();
               increaseLingots(isPractice ? 0 : 1);
               if (!isPractice) {
-                increaseLessonsCompleted();
+                // 모든 step에서 1씩만 증가 (lessonsPerTile = 1)
+                increaseLessonsCompleted(1);
               }
             }}
           >

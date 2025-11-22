@@ -18,6 +18,7 @@ import { Flag } from "./Flag";
 import type { LoginScreenState } from "./LoginScreen";
 import { LoginScreen } from "./LoginScreen";
 import { useLeaderboardRank } from "~/hooks/useLeaderboard";
+import subjects from "~/utils/subjects";
 
 export const RightBar = () => {
   const loggedIn = useBoundStore((x) => x.loggedIn);
@@ -48,8 +49,8 @@ export const RightBar = () => {
             role="button"
             tabIndex={0}
           >
-            <Flag language={language} width={45} />
-            <div>{language.name}</div>
+            <span className="text-3xl">{subjects[0].emoji}</span>
+            <div>{subjects[0].name}</div>
             <div
               className="absolute top-full z-10 rounded-2xl border-2 border-gray-300 bg-white"
               style={{
@@ -62,8 +63,8 @@ export const RightBar = () => {
                 My courses
               </h2>
               <button className="flex w-full items-center gap-3 border-t-2 border-gray-300 bg-blue-100 px-5 py-3 text-left font-bold">
-                <Flag language={language} width={45} />
-                <span className="text-blue-500">{language.name}</span>
+                <span className="text-3xl">{subjects[0].emoji}</span>
+                <span className="text-blue-500">{subjects[0].name}</span>
               </button>
               <Link
                 className="flex w-full items-center gap-3 rounded-b-2xl border-t-2 border-gray-300 px-5 py-3 text-left font-bold hover:bg-gray-100"

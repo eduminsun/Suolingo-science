@@ -13,6 +13,7 @@ import {
   MoreOptionsSvg,
   PodcastIconSvg,
 } from "./Svgs";
+import subjects from "~/utils/subjects";
 
 const EmptyFireTopBarSvg = (props: ComponentProps<"svg">) => {
   return (
@@ -86,7 +87,7 @@ export const TopBar = ({
             setMenu((x) => (x === "LANGUAGES" ? "HIDDEN" : "LANGUAGES"))
           }
         >
-          <Flag language={language} width={45} />
+          <span className="text-3xl">{subjects[0].emoji}</span>
           <span className="sr-only">See languages</span>
         </button>
 
@@ -132,10 +133,10 @@ export const TopBar = ({
                 return (
                   <div className="flex gap-5 p-5">
                     <div className="flex flex-col items-center justify-between gap-2">
-                      <div className="rounded-2xl border-4 border-blue-400">
-                        <Flag language={language} width={80} />
+                      <div className="rounded-2xl border-4 border-blue-400 p-4">
+                        <span className="text-5xl">{subjects[0].emoji}</span>
                       </div>
-                      <span className="font-bold">{language.name}</span>
+                      <span className="font-bold">{subjects[0].name}</span>
                     </div>
                     <Link
                       className="flex flex-col items-center justify-between gap-2"

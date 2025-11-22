@@ -1,38 +1,37 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import languages from "~/utils/languages";
+import subjects from "~/utils/subjects";
 import { LanguageHeader } from "~/components/LanguageHeader";
-import { useBoundStore } from "~/hooks/useBoundStore";
-import { Flag } from "~/components/Flag";
 import _bgSnow from "../../public/bg-snow.svg";
 import type { StaticImageData } from "next/image";
 
 const bgSnow = _bgSnow as StaticImageData;
 
 const Register: NextPage = () => {
-  const setLanguage = useBoundStore((x) => x.setLanguage);
   return (
     <main
       className="flex min-h-screen flex-col items-center bg-[#235390] text-white"
       style={{ backgroundImage: `url(${bgSnow.src})` }}
     >
       <LanguageHeader />
-      <div className="container flex grow flex-col items-center justify-center gap-20 px-4 py-16">
-        <h1 className="mt-20 text-center text-3xl font-extrabold tracking-tight text-white">
-          I want to learn...
+      <div className="container flex grow flex-col items-center justify-center gap-8 px-4 py-8">
+        <h1 className="text-center text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+          어떤 과학을 배우고 싶으신가요?
         </h1>
-        <section className="mx-auto grid w-full max-w-5xl grow grid-cols-1 flex-col gap-x-2 gap-y-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {languages.map((language) => (
+        <section className="mx-auto grid w-full max-w-2xl grid-cols-2 gap-4 sm:gap-6">
+          {subjects.map((subject) => (
             <Link
-              key={language.name}
+              key={subject.code}
               href="/learn"
               className={
-                "flex cursor-pointer flex-col items-center gap-4 rounded-2xl border-2 border-b-4 border-gray-400 px-5 py-8 text-xl font-bold hover:bg-gray-300 hover:bg-opacity-20"
+                "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-b-4 px-4 py-6 text-lg font-bold hover:bg-gray-300 hover:bg-opacity-20 transition-all sm:py-8 sm:text-xl"
               }
-              onClick={() => setLanguage(language)}
+              style={{
+                borderColor: subject.color,
+              }}
             >
-              <Flag language={language} />
-              <span>{language.name}</span>
+              <div className="text-5xl sm:text-6xl">{subject.emoji}</div>
+              <span>{subject.name}</span>
             </Link>
           ))}
         </section>

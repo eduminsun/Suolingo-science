@@ -19,22 +19,22 @@ export type TileType = Tile["type"];
 export const units: readonly Unit[] = [
   {
     unitNumber: 1,
-    description: "Form basic sentences, greet people",
+    description: "물질의 고유한 성질부터 혼합물의 분리까지",
     backgroundColor: "bg-[#58cc02]",
     textColor: "text-[#58cc02]",
     borderColor: "border-[#46a302]",
     tiles: [
       {
         type: "star",
-        description: "Form basic sentences",
+        description: "용해도와 끓는점",
       },
       {
         type: "book",
-        description: "Good morning",
+        description: "크로마토그래피",
       },
       {
         type: "star",
-        description: "Greet people",
+        description: "혼합물 분리 방법",
       },
       { type: "treasure" },
       { type: "book", description: "A date" },
