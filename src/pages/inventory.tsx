@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import choco from "../../public/choco-cookie.png";
 import lemon from "../../public/lemon.png";
 import sweetPotato from "../../public/sweet-potato.png";
@@ -26,7 +26,7 @@ import Link from "next/link";
 // 아이템 정보 매핑
 const itemInfo: Record<
   string,
-  { name: string; image: typeof Image; category: string }
+  { name: string; image: StaticImageData; category: string }
 > = {
   yangGang: {
     name: "양갱 에디션",
@@ -129,11 +129,11 @@ const Inventory: NextPage = () => {
         if (!acc[item.category]) {
           acc[item.category] = [];
         }
-        acc[item.category].push({ id: itemId, ...item });
+        acc[item.category]!.push({ id: itemId, ...item });
       }
       return acc;
     },
-    {} as Record<string, Array<{ id: string; name: string; image: typeof Image; category: string }>>,
+    {} as Record<string, Array<{ id: string; name: string; image: StaticImageData; category: string }>>,
   );
 
   const categories = Object.keys(itemsByCategory);
