@@ -14,7 +14,6 @@ import {
 } from "./Svgs";
 import { Calendar } from "./Calendar";
 import { useBoundStore } from "~/hooks/useBoundStore";
-import { Flag } from "./Flag";
 import type { LoginScreenState } from "./LoginScreen";
 import { LoginScreen } from "./LoginScreen";
 import { useLeaderboardRank } from "~/hooks/useLeaderboard";
@@ -24,7 +23,6 @@ export const RightBar = () => {
   const loggedIn = useBoundStore((x) => x.loggedIn);
   const lingots = useBoundStore((x) => x.lingots);
   const streak = useBoundStore((x) => x.streak);
-  const language = useBoundStore((x) => x.language);
   const lessonsCompleted = useBoundStore((x) => x.lessonsCompleted);
 
   const [languagesShown, setLanguagesShown] = useState(false);

@@ -1,11 +1,9 @@
 import type { NextPage } from "next";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  AppleSvg,
   BigCloseSvg,
-  BoySvg,
   CloseSvg,
   DoneSvg,
   LessonFastForwardEndFailSvg,
@@ -13,7 +11,6 @@ import {
   LessonFastForwardStartSvg,
   LessonTopBarEmptyHeart,
   LessonTopBarHeart,
-  WomanSvg,
 } from "~/components/Svgs";
 import summerPng from "../../public/summer.png";
 import chromatographyImg from "../../public/chromatography.png";
@@ -170,7 +167,7 @@ type Select1Of3Problem = {
   question: string;
   answers: readonly { icon: React.JSX.Element; name: string }[];
   correctAnswer: number;
-  image?: any; // StaticImageData from next/image
+  image?: StaticImageData;
 };
 
 type WriteInEnglishProblem = {
@@ -270,7 +267,7 @@ const Lesson: NextPage = () => {
           problem.type === "SELECT_1_OF_3"
             ? problem.answers[problem.correctAnswer]?.name ?? ""
             : Array.isArray(problem.correctAnswer)
-            ? problem.correctAnswer.map((i) => problem.answerTiles[i]).join(" ")
+            ? problem.correctAnswer.map((i: number) => problem.answerTiles[i] ?? "").join(" ")
             : "",
       },
     ]);

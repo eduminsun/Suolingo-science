@@ -4,7 +4,6 @@ import type { ComponentProps } from "react";
 import React, { useState } from "react";
 import { useBoundStore } from "~/hooks/useBoundStore";
 import { Calendar } from "./Calendar";
-import { Flag } from "./Flag";
 import {
   FireSvg,
   GemSvg,
@@ -76,7 +75,6 @@ export const TopBar = ({
   const [now, setNow] = useState(dayjs());
   const streak = useBoundStore((x) => x.streak);
   const lingots = useBoundStore((x) => x.lingots);
-  const language = useBoundStore((x) => x.language);
   return (
     <header className="fixed z-20 h-[58px] w-full">
       <div

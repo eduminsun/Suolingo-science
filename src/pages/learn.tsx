@@ -213,7 +213,7 @@ const getTileColors = ({
       return "border-yellow-500 bg-yellow-400";
     case "ACTIVE":
       // 원 내부 색상은 단위별 색상 유지, 테두리만 회색으로
-      const [borderColor, bgColor] = defaultColors.split(" ");
+      const [, bgColor] = defaultColors.split(" ");
       return `border-gray-300 ${bgColor}` as `border-${string} bg-${string}`;
   }
 };

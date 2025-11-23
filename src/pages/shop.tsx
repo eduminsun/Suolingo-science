@@ -170,9 +170,10 @@ const DoubleOrNothingSvg = (props: ComponentProps<"svg">) => {
   );
 };
 
-const DuoPlushieSvg = (props: ComponentProps<"svg">) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _DuoPlushieSvg = (_props: ComponentProps<"svg">) => {
   return (
-    <svg width="349" height="318" viewBox="0 0 349 318" fill="none" {...props}>
+    <svg width="349" height="318" viewBox="0 0 349 318" fill="none" {..._props}>
       <g clipPath="url(#clip0_532_2863)">
         <path
           d="M59.9462 39.376C70.8815 39.6986 91.8988 38.2255 105.558 33.8054C119.218 29.3853 118.745 24.2104 127.418 17.5426C135.336 11.4558 142.909 5.63411 153.3 2.27161C188.139 -9.00188 215.787 24.7285 221.249 36.7845C226.71 48.8405 234.936 81.7095 241.539 131.989C257.283 225.439 210.391 263.27 176.065 275.365C129.534 286.377 64.1601 275.349 30.8313 206.099C-2.49759 136.85 -17.5853 65.3211 31.328 45.722C41.5931 41.6088 49.9636 39.0815 59.9462 39.376Z"
@@ -368,7 +369,13 @@ const Shop: NextPage = () => {
     // 로컬 스토리지에서 구매한 아이템 불러오기
     const stored = localStorage.getItem("purchasedItems");
     if (stored) {
-      setPurchasedItems(new Set(JSON.parse(stored)));
+      try {
+        const parsed = JSON.parse(stored) as string[];
+        setPurchasedItems(new Set(parsed));
+      } catch {
+        // JSON 파싱 실패 시 빈 Set으로 설정
+        setPurchasedItems(new Set());
+      }
     }
   }, []);
 

@@ -111,7 +111,13 @@ const Inventory: NextPage = () => {
     // 로컬 스토리지에서 구매한 아이템 불러오기
     const stored = localStorage.getItem("purchasedItems");
     if (stored) {
-      setPurchasedItems(JSON.parse(stored));
+      try {
+        const parsed = JSON.parse(stored) as string[];
+        setPurchasedItems(parsed);
+      } catch {
+        // JSON 파싱 실패 시 빈 배열로 설정
+        setPurchasedItems([]);
+      }
     }
     
     // 로컬 스토리지에서 선택된 아이템 불러오기
