@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import choco from "../../public/choco-cookie.png";
 import lemon from "../../public/lemon.png";
 import sweetPotato from "../../public/sweet-potato.png";
@@ -536,7 +536,7 @@ const getTopBarColors = (
 // 선택 가능한 아이템 정보 (캐릭터 + 소다)
 const selectableItems: Record<
   string,
-  { name: string; image: typeof yangGang }
+  { name: string; image: StaticImageData }
 > = {
   yangGang: {
     name: "양갱 에디션",
