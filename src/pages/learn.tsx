@@ -259,13 +259,30 @@ const TileTooltip = ({
 
   // Unit 1의 첫 번째 별(star)이면 step=1, 두 번째 book이면 step=2, 세 번째 star이면 step=3
   const getStepParam = () => {
-    if (unitNumber === 1) {
-      if (index === 0 && tileType === "star") return "?step=1";
-      if (index === 1 && tileType === "book") return "?step=2";
-      if (index === 2 && tileType === "star") return "?step=3";
-    }
-    return "";
-  };
+  // Unit 1
+  if (unitNumber === 1) {
+    if (index === 0 && tileType === "star") return "?unit=1&step=1";
+    if (index === 1 && tileType === "book") return "?unit=1&step=2";
+    if (index === 2 && tileType === "star") return "?unit=1&step=3";
+  }
+  
+  // Unit 2
+  if (unitNumber === 2) {
+    if (index === 0 && tileType === "fast-forward") return "?unit=2&step=1";
+    if (index === 1 && tileType === "dumbbell") return "?unit=2&step=2";
+    if (index === 2 && tileType === "book") return "?unit=2&step=3";
+    // 필요한 만큼 추가...
+  }
+  
+  // Unit 3
+  if (unitNumber === 3) {
+    if (index === 0 && tileType === "fast-forward") return "?unit=3&step=1";
+    if (index === 1 && tileType === "book") return "?unit=3&step=2";
+    // 필요한 만큼 추가...
+  }
+  
+  return "?unit=1&step=1";  // 기본값
+};
 
   return (
     <div

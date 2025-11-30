@@ -152,10 +152,299 @@ const lessonProblem11 = {
   correctAnswer: 2,
 } as const;
 
+const lessonProblem12 = {
+  type: "SELECT_1_OF_3",
+  question: `해수의 표층 수온에 영향을 주는 요인은?`,
+  answers: [
+    { icon: <></>, name: "바람" },
+    { icon: <></>, name: "태양 에너지" },
+    { icon: <></>, name: "염분" },
+    { icon: <></>, name: "위도" },
+    { icon: <></>, name: "경도" },
+  ],
+  correctAnswer: 1,
+} as const;
+
+// 해수의 온도 문제 1: 표층 수온 분포 (SELECT_1_OF_3)
+const lessonProblem13 = {
+  type: "SELECT_1_OF_3",
+  question: `전 세계 해수의 표층 수온 분포에 대한 설명으로 옳은 것은?`,
+  answers: [
+    { icon: <></>, name: "저위도에서 고위도로 갈수록 표층 수온이 높아진다" },
+    { icon: <></>, name: "위도가 같은 곳에서는 대체로 표층 수온이 비슷하다" },
+    { icon: <></>, name: "적도 부근의 표층 수온이 극지방보다 낮다" },
+  ],
+  correctAnswer: 1, // "위도가 같은 곳에서는 대체로 표층 수온이 비슷하다"
+} as const;
+
+// 해수의 온도 문제 2: 깊이에 따른 수온 변화 (WRITE_IN_ENGLISH)
+const lessonProblem14 = {
+  type: "WRITE_IN_ENGLISH",
+  question: `해수의 깊이에 따른 수온 분포를 알아보자! 햇빛이 도달하는 ( ㄱ )에서는 수온이 높고, 햇빛이 거의 도달하지 않는 ( ㄴ )에서는 수온이 낮아. 그리고 ( ㄱ )과 ( ㄴ ) 사이의 ( ㄷ )에서는 깊이가 깊어질수록 수온이 급격히 낮아지지!`,
+  answerTiles: ["혼합층", "수온 약층", "심해층", "표층", "중층"],
+  // ㄱ=혼합층, ㄴ=심해층, ㄷ=수온 약층
+  correctAnswer: [0, 2, 1],
+} as const;
+
+// ==========================================
+// 호흡과 배설 관련 문제 20개
+// Unit 2 - Step 2 (호흡), Step 3 (배설)
+// ==========================================
+
+// ========== 호흡 관련 문제 ==========
+
+// 문제 2: 호흡 기관의 순서 (WRITE_IN_ENGLISH)
+const lessonProblem15 = {
+  type: "WRITE_IN_ENGLISH",
+  question: `공기가 들어오는 순서를 완성해보자! 코나 입 → 기관 → ( ㄱ ) → 폐 속의 ( ㄴ )로 공기가 이동해!`,
+  answerTiles: ["인두", "후두", "기관지", "식도", "폐포"],
+  correctAnswer: [2, 4],
+} as const;
+
+// 문제 3: 폐포의 특징 (SELECT_1_OF_3)
+const lessonProblem16 = {
+  type: "SELECT_1_OF_3",
+  question: `폐포의 특징으로 옳지 않은 것은?`,
+  answers: [
+    { icon: <></>, name: "포도송이처럼 작은 주머니가 수없이 많이 모여 있다" },
+    { icon: <></>, name: "표면적이 넓어 기체 교환에 유리하다" },
+    { icon: <></>, name: "두꺼운 벽으로 이루어져 있어 튼튼하다" },
+  ],
+  correctAnswer: 2, // "두꺼운 벽으로 이루어져 있어 튼튼하다"
+} as const;
+
+// 문제 4: 들숨과 날숨 (WRITE_IN_ENGLISH)
+const lessonProblem17 = {
+  type: "WRITE_IN_ENGLISH",
+  question: `호흡 운동을 알아보자! 들숨일 때 갈비뼈는 ( ㄱ ), 가로막은 ( ㄴ )하고, 날숨일 때 흉강 부피는 ( ㄷ ), 흉강 압력은 ( ㄹ )!`,
+  answerTiles: ["올라간다", "내려간다", "증가한다","감소한다"],
+  correctAnswer: [0, 1, 3, 2],
+} as const;
+
+// 문제 5: 기체 교환 (SELECT_1_OF_3)
+const lessonProblem18 = {
+  type: "SELECT_1_OF_3",
+  question: `폐포에서 일어나는 기체 교환에 대한 설명으로 옳은 것은?`,
+  answers: [
+    { icon: <></>, name: "산소는 폐포에서 혈액으로, 이산화 탄소는 혈액에서 폐포로 이동한다" },
+    { icon: <></>, name: "산소와 이산화 탄소 모두 폐포에서 혈액으로 이동한다" },
+    { icon: <></>, name: "이산화 탄소는 폐포에서 혈액으로, 산소는 혈액에서 폐포로 이동한다" },
+  ],
+  correctAnswer: 0,
+} as const;
+
+
+// 문제 10: 날숨과 들숨의 기체 비교 (SELECT_1_OF_3)
+const lessonProblem19 = {
+  type: "SELECT_1_OF_3",
+  question: `날숨에 대한 설명으로 옳은 것은?`,
+  answers: [
+    { icon: <></>, name: "들숨보다 산소가 많고 이산화 탄소가 적다" },
+    { icon: <></>, name: "들숨보다 산소가 적고 이산화 탄소가 많다" },
+    { icon: <></>, name: "들숨과 기체 조성이 같다" },
+  ],
+  correctAnswer: 1,
+} as const;
+
+// ========== 배설 관련 문제  ==========
+
+// 문제 12: 배설 기관 (WRITE_IN_ENGLISH)
+const lessonProblem20 = {
+  type: "WRITE_IN_ENGLISH",
+  question: `배설 기관과 배설물을 연결해보자! ( ㄱ )은 이산화 탄소와 물을 배출하고, ( ㄴ )은 요소와 물을 배출해!`,
+  answerTiles: ["폐", "콩팥", "피부", "간", "심장"],
+  // ㄱ=폐, ㄴ=콩팥
+  correctAnswer: [0, 1],
+} as const;
+
+// 문제 13: 콩팥의 구조 (SELECT_1_OF_3)
+const lessonProblem21 = {
+  type: "SELECT_1_OF_3",
+  question: `콩팥의 기본 단위로 오줌을 만드는 구조는?`,
+  answers: [
+    { icon: <></>, name: "네프론" },
+    { icon: <></>, name: "방광" },
+    { icon: <></>, name: "보먼주머니" },
+  ],
+  correctAnswer: 0, // "네프론"
+} as const;
+
+// 문제 14: 오줌 생성 과정 (WRITE_IN_ENGLISH)
+const lessonProblem22 = {
+  type: "WRITE_IN_ENGLISH",
+  question: `오줌이 만들어지는 과정을 알아보자! 사구체에서 ( ㄱ )된 것 중 필요한 물질을 ( ㄴ )하여 노폐물이 ( ㄷ )돼!`,
+  answerTiles: ["오줌", "원뇨", "재흡수", "여과", "분비"],
+  // ㄱ=여과, ㄴ=재흡수, ㄷ=분비
+  correctAnswer: [3, 2, 4],
+} as const;
+
+// 문제 15: 요소의 생성 (SELECT_1_OF_3)
+const lessonProblem23 = {
+  type: "SELECT_1_OF_3",
+  question: `요소는 어디에서 만들어지는가?`,
+  answers: [
+    { icon: <></>, name: "콩팥" },
+    { icon: <></>, name: "간" },
+    { icon: <></>, name: "폐" },
+  ],
+  correctAnswer: 1, // "간"
+} as const;
+
+// 문제 16: 재흡수 (SELECT_1_OF_3)
+const lessonProblem24 = {
+  type: "SELECT_1_OF_3",
+  question: `콩팥에서 재흡수되는 물질이 아닌 것은?`,
+  answers: [
+    { icon: <></>, name: "포도당" },
+    { icon: <></>, name: "물" },
+    { icon: <></>, name: "요소" },
+  ],
+  correctAnswer: 2, // "요소"
+} as const;
+
+// 문제 19: 오줌의 성분 (SELECT_1_OF_3)
+const lessonProblem25 = {
+  type: "SELECT_1_OF_3",
+  question: `정상적인 오줌에 포함되지 않는 성분은?`,
+  answers: [
+    { icon: <></>, name: "요소" },
+    { icon: <></>, name: "물" },
+    { icon: <></>, name: "포도당" },
+  ],
+  correctAnswer: 2, // "포도당" - 정상적으로는 재흡수됨
+} as const;
+
+// 문제 20: 배설 기관의 종류 (SELECT_1_OF_3)
+const lessonProblem26 = {
+  type: "SELECT_1_OF_3",
+  question: `다음 중 배설 기관이 아닌 것은?`,
+  answers: [
+    { icon: <></>, name: "콩팥" },
+    { icon: <></>, name: "폐" },
+    { icon: <></>, name: "위" },
+  ],
+  correctAnswer: 2, // "위" - 소화 기관
+} as const;
+
+// 물질의 특성
+// 4. 물질의 특성
+const lessonProblem27 = {
+  type: "SELECT_1_OF_3",
+  question: "물질의 특성에 대한 설명으로 옳은 것은?",
+  answers: [
+    { icon: <></>, name: "질량은 물질의 고유한 양으로 물질의 특성이다" },
+    { icon: <></>, name: "물질의 양에 관계없이 일정하다" },
+    { icon: <></>, name: "물질의 특성은 혼합물만 가지고 있다" },
+  
+  ],
+  correctAnswer: 1,
+  explanation: "물질의 특성(밀도, 끓는점, 녹는점 등)은 물질의 양에 관계없이 일정하다."
+};
+
+// 5. 물과 소금물의 가열 곡선
+const lessonProblem28 = {
+  type: "SELECT_1_OF_3",
+  question: "물과 소금물을 가열할 때, 소금물에 대한 설명으로 옳은 것은?",
+  answers: [
+    { icon: <></>, name: "물보다 낮은 온도에서 끓기 시작한다"},
+    { icon: <></>, name: "끓는 동안 온도가 일정하게 유지된다" },
+    { icon: <></>, name: "끓는 동안 농도가 진해진다"},
+    
+  ],
+  correctAnswer: 2,
+  explanation: "소금물은 끓는 동안 물이 증발하므로 소금물의 농도가 진해진다."
+};
+
+// 13. 철의 밀도 계산
+const lessonProblem29 = {
+  type: "SELECT_1_OF_3",
+  question: "철의 부피가 10cm³일 때, 순수한 철의 질량은? (단, 철의 밀도는 7.87g/cm³)",
+  answers: [
+    { icon: <></>, name: "3.98g"},
+    { icon: <></>, name: "39.80g"},
+    { icon: <></>, name: "78.70g"},
+  ],
+  correctAnswer: 2,
+  explanation: "질량 = 밀도 × 부피 = 7.87 × 10 = 78.7g이다."
+};
+
+// 14. 밀도에 대한 설명
+const lessonProblem30 = {
+  type: "SELECT_1_OF_3",
+  question: "밀도에 관한 설명으로 옳지 않은 것은?",
+  answers: [
+    { icon: <></>, name: "물질마다 고유한 값을 가진다"},
+    { icon: <></>, name: "단위는 g/cm³, kg/L 등을 사용한다"},
+    { icon: <></>, name: "부피가 같으면 질량이 작을수록 밀도는 크다"},
+   
+  ],
+  correctAnswer: 2,
+  explanation: "부피가 같으면 질량이 클수록 밀도가 크다. 밀도 = 질량/부피이다."
+};
+
+// 15. 반지의 밀도 측정
+const lessonProblem31 = {
+  type: "WRITE_IN_ENGLISH",
+  question: "물 12.0mL가 들어있는 눈금실린더에 반지를 넣었더니 18.0mL로 변했다. 반지의 질량이 21.0g이면? 반지의 부피는 (______)mL이고, 밀도는 질량을 (______)로 나누어 구한다.",
+  answerTiles: [
+    { options: ["6.0", "18.0"] },
+    { options: ["부피", "무게"] }
+  ],
+  correctAnswer: [0, 0],
+  explanation: "부피 = 18.0 - 12.0 = 6.0mL이고, 밀도 = 질량/부피이다."
+};
+
+// 16. 여러 물질의 부피와 질량
+const lessonProblem32 = {
+  type: "SELECT_1_OF_3",
+  question: "물질 A~E의 부피와 질량을 측정했을 때, 밀도가 같은 물질은?",
+  answers: [
+    { icon: <></>, name: "A(20mL, 80g)와 E(32mL, 64g)"},
+    { icon: <></>, name: "B(300mL, 150g)와 D(40mL, 20g)"},
+    { icon: <></>, name: "C(30mL, 10g)와 E(32mL, 64g)"},
+  ],
+  correctAnswer: 1,
+  explanation: "B의 밀도 = 150/300 = 0.5g/mL, D의 밀도 = 20/40 = 0.5g/mL로 같다."
+};
+
+// 17. 25℃, 1기압에서 물질의 밀도
+const lessonProblem33 = {
+  type: "SELECT_1_OF_3",
+  question: "25℃, 1기압에서 물에 넣었을 때 물 위에 뜨는 물질은? (물의 밀도 1g/cm³)",
+  answers: [
+    { icon: <></>, name: "밀도가 0.7g/cm³인 물질 (가)"},
+    { icon: <></>, name: "밀도가 1.5g/cm³인 물질 (나)"},
+    { icon: <></>, name: "밀도가 1.9g/cm³인 물질 (다)"},
+    
+  ],
+  correctAnswer: 0,
+  explanation: "물의 밀도(1g/cm³)보다 작은 밀도를 가진 물질이 물 위에 뜬다."
+};
+
+
+// 20. 밀도와 관련 없는 현상
+const lessonProblem34 = {
+  type: "SELECT_1_OF_3",
+  question: "물질의 밀도와 관련이 없는 현상은?",
+  answers: [
+    { icon: <></>, name: "썩은 달걀은 소금물 위에 뜬다"},
+    { icon: <></>, name: "설탕은 물에 녹지만, 기름에는 녹지 않는다"},
+    { icon: <></>, name: "추운 겨울철 호수에서 물고기가 살 수 있다"},
+  ],
+  correctAnswer: 1,
+  explanation: "설탕의 용해는 용해도와 관련된 현상으로 밀도와는 관련이 없다."
+};
+
+
 // 단계별 문제 그룹
-const lessonProblemsStep1 = [lessonProblem1, lessonProblem2, lessonProblem3];
-const lessonProblemsStep2 = [lessonProblem4, lessonProblem5, lessonProblem6, lessonProblem7, lessonProblem8];
-const lessonProblemsStep3 = [lessonProblem9, lessonProblem10, lessonProblem11];
+const lessonProblemsUnit1Step1 = [lessonProblem1, lessonProblem2, lessonProblem3];
+const lessonProblemsUnit1Step2 = [lessonProblem4, lessonProblem5, lessonProblem6, lessonProblem7, lessonProblem8];
+const lessonProblemsUnit1Step3 = [lessonProblem9, lessonProblem10, lessonProblem11];
+const lessonProblemsUnit2Step1 = [lessonProblem12, lessonProblem13, lessonProblem14];
+const lessonProblemsUnit2Step2 = [lessonProblem15,lessonProblem16, lessonProblem17, lessonProblem18, lessonProblem19 ];
+const lessonProblemsUnit2Step3 = [lessonProblem20, lessonProblem21, lessonProblem22, lessonProblem23, lessonProblem24, lessonProblem25, lessonProblem26]
+const lessonProblemsUnit3Step1 = [lessonProblem27, lessonProblem28, lessonProblem29, lessonProblem30]
+const lessonProblemsUnit3Step2 = [lessonProblem31, lessonProblem32, lessonProblem33, lessonProblem34]
 
 const numbersEqual = (a: readonly number[], b: readonly number[]): boolean => {
   return a.length === b.length && a.every((_, i) => a[i] === b[i]);
@@ -208,12 +497,30 @@ const Lesson: NextPage = () => {
   const [questionResults, setQuestionResults] = useState<QuestionResult[]>([]);
   const [reviewLessonShown, setReviewLessonShown] = useState(false);
 
+  const unitNumber = Number(router.query["fast-forward"]); 
   // 라우터 쿼리에서 step 파라미터 읽기 (기본값: 1)
+  const unit = Number(router.query["fast-forward"]) || Number(router.query.unit) || 1;
   const step = Number(router.query.step) || 1;
-  const lessonProblems = 
-    step === 3 ? lessonProblemsStep3 :
-    step === 2 ? lessonProblemsStep2 :
-    lessonProblemsStep1;
+  
+  // 문제 데이터 맵핑
+  const lessonProblemsMap: Record<number, Record<number, any>> = {
+    1: {
+      1: lessonProblemsUnit1Step1,
+      2: lessonProblemsUnit1Step2,
+      3: lessonProblemsUnit1Step3,
+    },
+    2: {
+      1: lessonProblemsUnit2Step1,
+      2: lessonProblemsUnit2Step2,
+      3: lessonProblemsUnit2Step3,
+    },
+    3: {
+      1: lessonProblemsUnit3Step1,
+      2: lessonProblemsUnit3Step2,
+    },
+  }
+
+  const lessonProblems = lessonProblemsMap[unit]?.[step] ?? lessonProblemsUnit1Step1;
 
   // step이 바뀌면 문제 인덱스를 0으로 리셋
   useEffect(() => {
@@ -286,7 +593,6 @@ const Lesson: NextPage = () => {
     setCorrectAnswerShown(true);
   };
 
-  const unitNumber = Number(router.query["fast-forward"]);
 
   if (hearts !== null && hearts < 0 && !correctAnswerShown) {
     return (

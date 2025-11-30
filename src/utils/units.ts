@@ -43,14 +43,14 @@ export const units: readonly Unit[] = [
   },
   {
     unitNumber: 2,
-    description: "Get around in a city",
+    description: "해수의 온도, 호흡과 배설",
     backgroundColor: "bg-[#ce82ff]",
     textColor: "text-[#ce82ff]",
     borderColor: "border-[#a568cc]",
     tiles: [
-      { type: "fast-forward", description: "Get around in a city" },
-      { type: "dumbbell", description: "Personalized practice" },
-      { type: "book", description: "One thing" },
+      { type: "fast-forward", description: "해수의 온도" },
+      { type: "dumbbell", description: "호흡" },
+      { type: "book", description: "배설" },
       { type: "treasure" },
       { type: "star", description: "Get around in a city" },
       { type: "book", description: "A very big family" },
