@@ -341,7 +341,7 @@ const lessonProblem27 = {
   ],
   correctAnswer: 1,
   explanation: "물질의 특성(밀도, 끓는점, 녹는점 등)은 물질의 양에 관계없이 일정하다."
-};
+} as const;
 
 // 5. 물과 소금물의 가열 곡선
 const lessonProblem28 = {
@@ -355,7 +355,7 @@ const lessonProblem28 = {
   ],
   correctAnswer: 2,
   explanation: "소금물은 끓는 동안 물이 증발하므로 소금물의 농도가 진해진다."
-};
+} as const;
 
 // 13. 철의 밀도 계산
 const lessonProblem29 = {
@@ -368,7 +368,7 @@ const lessonProblem29 = {
   ],
   correctAnswer: 2,
   explanation: "질량 = 밀도 × 부피 = 7.87 × 10 = 78.7g이다."
-};
+} as const;
 
 // 14. 밀도에 대한 설명
 const lessonProblem30 = {
@@ -382,19 +382,16 @@ const lessonProblem30 = {
   ],
   correctAnswer: 2,
   explanation: "부피가 같으면 질량이 클수록 밀도가 크다. 밀도 = 질량/부피이다."
-};
+} as const;
 
 // 15. 반지의 밀도 측정
 const lessonProblem31 = {
   type: "WRITE_IN_ENGLISH",
-  question: "물 12.0mL가 들어있는 눈금실린더에 반지를 넣었더니 18.0mL로 변했다. 반지의 질량이 21.0g이면? 반지의 부피는 (______)mL이고, 밀도는 질량을 (______)로 나누어 구한다.",
-  answerTiles: [
-    { options: ["6.0", "18.0"] },
-    { options: ["부피", "무게"] }
-  ],
-  correctAnswer: [0, 0],
+  question: "물 12.0mL가 들어있는 눈금실린더에 반지를 넣었더니 18.0mL로 변했다. 반지의 질량이 21.0g이면? 반지의 부피는 ( ㄱ )mL이고, 밀도는 질량을 ( ㄴ )로 나누어 구한다.",
+  answerTiles: ["6.0", "18.0", "무게", "부피"], 
+  correctAnswer: [0, 3],
   explanation: "부피 = 18.0 - 12.0 = 6.0mL이고, 밀도 = 질량/부피이다."
-};
+} as const;
 
 // 16. 여러 물질의 부피와 질량
 const lessonProblem32 = {
@@ -407,7 +404,7 @@ const lessonProblem32 = {
   ],
   correctAnswer: 1,
   explanation: "B의 밀도 = 150/300 = 0.5g/mL, D의 밀도 = 20/40 = 0.5g/mL로 같다."
-};
+} as const;
 
 // 17. 25℃, 1기압에서 물질의 밀도
 const lessonProblem33 = {
@@ -421,7 +418,7 @@ const lessonProblem33 = {
   ],
   correctAnswer: 0,
   explanation: "물의 밀도(1g/cm³)보다 작은 밀도를 가진 물질이 물 위에 뜬다."
-};
+} as const;
 
 
 // 20. 밀도와 관련 없는 현상
@@ -435,7 +432,7 @@ const lessonProblem34 = {
   ],
   correctAnswer: 1,
   explanation: "설탕의 용해는 용해도와 관련된 현상으로 밀도와는 관련이 없다."
-};
+} as const;
 
 // 1. 비열의 정의
 const lessonProblem35 = {
@@ -448,7 +445,7 @@ const lessonProblem35 = {
   ],
   correctAnswer: 0,
   explanation: "비열은 어떤 물질 1g의 온도를 1℃ 높이는 데 필요한 열량을 말한다."
-};
+} as const;
 
 // 3. 비열 계산 문제
 const lessonProblem36 = {
@@ -463,7 +460,7 @@ const lessonProblem36 = {
   ],
   correctAnswer: 1,
   explanation: "비열 = 열량/(질량×온도변화) = 2kcal/(0.4kg×20℃) = 0.25kcal/(kg·℃)"
-};
+} as const;
 
 // 4. 열팽창 정도 비교
 const lessonProblem37 = {
@@ -476,7 +473,7 @@ const lessonProblem37 = {
   ],
   correctAnswer: 1,
   explanation: "고체의 열팽창 정도는 물질의 종류에 따라 다르다. 1kg당 온도를 1℃ 높이는 데 필요한 열량은 물질마다 고유한 값을 갖는다."
-};
+} as const;
 
 
 // 단계별 문제 그룹

@@ -278,6 +278,7 @@ const TileTooltip = ({
   if (unitNumber === 3) {
     if (index === 0 && tileType === "fast-forward") return "?unit=3&step=1";
     if (index === 1 && tileType === "book") return "?unit=3&step=2";
+    if (index === 2 && tileType === "star") return "?unit=3&step=3";
     // 필요한 만큼 추가...
   }
   
@@ -577,11 +578,15 @@ const selectableItems: Record<
   },
 };
 
+const isSelectableKey = (v: string | null): v is keyof typeof selectableItems => {
+  return !!v && Object.prototype.hasOwnProperty.call(selectableItems, v);
+};
+
 const Learn: NextPage = () => {
   const { loginScreenState, setLoginScreenState } = useLoginScreen();
 
   const [scrollY, setScrollY] = useState(0);
-  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
+  const [selectedCharacter, setSelectedCharacter] = useState<keyof typeof selectableItems | null>(null);
 
   useEffect(() => {
     const updateScrollY = () => setScrollY(globalThis.scrollY ?? scrollY);
@@ -593,7 +598,7 @@ const Learn: NextPage = () => {
   // localStorage에서 선택된 아이템 가져오기
   useEffect(() => {
     const savedItem = localStorage.getItem("selectedCharacter");
-    if (savedItem && Object.keys(selectableItems).includes(savedItem)) {
+    if (isSelectableKey(savedItem)) {
       setSelectedCharacter(savedItem);
     }
   }, []);
@@ -620,17 +625,26 @@ const Learn: NextPage = () => {
                 className="absolute left-4 z-50 flex h-16 w-16 items-center justify-center rounded-full border-2 border-b-4 border-gray-200 bg-white transition hover:bg-gray-50 hover:brightness-90 md:left-0"
               >
                 <span className="sr-only">Practice exercise</span>
-                {selectedCharacter && selectableItems[selectedCharacter] ? (
-                  <Image
-                    src={selectableItems[selectedCharacter].image}
-                    alt={selectableItems[selectedCharacter].name}
-                    width={48}
-                    height={48}
-                    className="rounded-full object-cover"
-                  />
-                ) : (
-                  <PracticeExerciseSvg className="h-8 w-8" />
-                )}
+                {(() => {
+                  const selectedItem =
+                    selectedCharacter && selectableItems[selectedCharacter]
+                      ? selectableItems[selectedCharacter]
+                      : null;
+
+                  if (selectedItem) {
+                    return (
+                      <Image
+                        src={selectedItem.image}
+                        alt={selectedItem.name}
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    );
+                  }
+
+                  return <PracticeExerciseSvg className="h-8 w-8" />;
+                })()}
               </Link>
             </div>
             {scrollY > 100 && (
@@ -731,12 +745,12 @@ const UnitHeader = ({
   unitNumber,
   description,
   backgroundColor,
-  //borderColor,
+  borderColor: _borderColor,
 }: {
   unitNumber: number;
   description: string;
   backgroundColor: `bg-${string}`;
-  //borderColor: `border-${string}`;
+  borderColor: `border-${string}`;
 }) => {
   const _language = useBoundStore((x) => x.language);
   return (
