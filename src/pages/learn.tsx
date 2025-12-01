@@ -479,12 +479,23 @@ const UnitSection = ({ unit }: { unit: Unit }): JSX.Element => {
                             tilesLength: unit.tiles.length,
                           }),
                         ].join(" ")}
-                        onClick={() => {
-                          if (status === "ACTIVE") {
-                            increaseLessonsCompleted(4);
-                            increaseLingots(1);
-                          }
-                        }}
+                                onClick={() => {
+                                  if (status === "ACTIVE") {
+                                      // Compute how many lessons remain to complete this unit
+                                      const lessonsPerTile = 1;
+                                      const unitStartIndex = units
+                                        .filter((u) => u.unitNumber < unit.unitNumber)
+                                        .reduce((sum, u) => sum + u.tiles.length * lessonsPerTile, 0);
+                                      const unitEndIndex = unitStartIndex + unit.tiles.length * lessonsPerTile;
+                                    const currentLessonsCompleted = lessonsCompleted;
+                                    const targetLessons = Math.max(currentLessonsCompleted, unitEndIndex);
+                                    const delta = Math.max(0, targetLessons - currentLessonsCompleted);
+                                    if (delta > 0) {
+                                      increaseLessonsCompleted(delta);
+                                    }
+                                    increaseLingots(1);
+                                  }
+                                }}
                         role="button"
                         tabIndex={status === "ACTIVE" ? 0 : undefined}
                         aria-hidden={status !== "ACTIVE"}

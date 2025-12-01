@@ -15,13 +15,17 @@ export const createLessonSlice: BoundStateCreator<LessonSlice> = (set) => ({
     })),
   jumpToUnit: (unitNumber: number) =>
     set(({ lessonsCompleted }) => {
-      const lessonsPerTile = 4;
+  const lessonsPerTile = 1;
       const totalLessonsToJumpToUnit = units
         .filter((unit) => unit.unitNumber < unitNumber)
         .map((unit) => unit.tiles.length * lessonsPerTile)
         .reduce((a, b) => a + b, 0);
+      // Mark only the first step of the target unit as completed when jumping.
+      // This makes the UI show previous units completed and the target unit's
+      // first step as already done.
+      const target = totalLessonsToJumpToUnit + 1;
       return {
-        lessonsCompleted: Math.max(lessonsCompleted, totalLessonsToJumpToUnit),
+        lessonsCompleted: Math.max(lessonsCompleted, target),
       };
     }),
 });
