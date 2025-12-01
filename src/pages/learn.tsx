@@ -17,7 +17,7 @@ import {
   GoldenDumbbellSvg,
   GoldenTreasureSvg,
   GoldenTrophySvg,
-  GuidebookSvg,
+  //GuidebookSvg,
   LessonCompletionSvg0,
   LessonCompletionSvg1,
   LessonCompletionSvg2,
@@ -731,14 +731,14 @@ const UnitHeader = ({
   unitNumber,
   description,
   backgroundColor,
-  borderColor,
+  //borderColor,
 }: {
   unitNumber: number;
   description: string;
   backgroundColor: `bg-${string}`;
-  borderColor: `border-${string}`;
+  //borderColor: `border-${string}`;
 }) => {
-  const language = useBoundStore((x) => x.language);
+  const _language = useBoundStore((x) => x.language);
   return (
     <article
       className={["max-w-2xl text-white sm:rounded-xl", backgroundColor].join(

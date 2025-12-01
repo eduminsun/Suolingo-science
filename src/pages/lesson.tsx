@@ -18,6 +18,8 @@ import celebrationPng from "../../public/celebration.png";
 import { useBoundStore } from "~/hooks/useBoundStore";
 import { useRouter } from "next/router";
 
+
+
 // 과학 OX 1: 고체 용해도와 압력
 const lessonProblem1 = {
   type: "SELECT_1_OF_3",
@@ -435,6 +437,47 @@ const lessonProblem34 = {
   explanation: "설탕의 용해는 용해도와 관련된 현상으로 밀도와는 관련이 없다."
 };
 
+// 1. 비열의 정의
+const lessonProblem35 = {
+  type: "SELECT_1_OF_3",
+  question: "비열에 대한 설명으로 옳은 것은?",
+  answers: [
+    { icon: <></>, name: "물질 1g의 온도를 1℃ 높이는 데 필요한 열량이다"},
+    { icon: <></>, name: "열의 이동을 막는 것을 열평형이라고 한다"},
+    { icon: <></>, name: "어떤 온도에서 용매 100g에 최대로 녹을 수 있는 용질의 g수"},
+  ],
+  correctAnswer: 0,
+  explanation: "비열은 어떤 물질 1g의 온도를 1℃ 높이는 데 필요한 열량을 말한다."
+};
+
+// 3. 비열 계산 문제
+const lessonProblem36 = {
+  type: "SELECT_1_OF_3",
+  question: "질량이 400g인 물질이 2kcal의 열량을 얻어 온도가 20℃ 상승하였다. 이 물질의 비열은 몇 kcal/(kg·℃)인가?",
+  answers: [
+    { icon: <></>, name: "0.15"},
+    { icon: <></>, name: "0.25"},
+    { icon: <></>, name: "0.5"},
+    { icon: <></>, name: "0.75"},
+    { icon: <></>, name: "1.25"},
+  ],
+  correctAnswer: 1,
+  explanation: "비열 = 열량/(질량×온도변화) = 2kcal/(0.4kg×20℃) = 0.25kcal/(kg·℃)"
+};
+
+// 4. 열팽창 정도 비교
+const lessonProblem37 = {
+  type: "SELECT_1_OF_3",
+  question: "다음 중 열팽창에 대한 설명으로 옳지 않은 것은?",
+  answers: [
+    { icon: <></>, name: "고체, 액체, 기체 모두 열팽창을 한다"},
+    { icon: <></>, name: "고체의 열팽창 정도는 물질의 종류에 관계없이 일정하다"},
+    { icon: <></>, name: "입자들 사이가 멀어지면서 입자들이 차지하는 공간이 넓어져 팽창하는 것이다"},
+  ],
+  correctAnswer: 1,
+  explanation: "고체의 열팽창 정도는 물질의 종류에 따라 다르다. 1kg당 온도를 1℃ 높이는 데 필요한 열량은 물질마다 고유한 값을 갖는다."
+};
+
 
 // 단계별 문제 그룹
 const lessonProblemsUnit1Step1 = [lessonProblem1, lessonProblem2, lessonProblem3];
@@ -445,6 +488,7 @@ const lessonProblemsUnit2Step2 = [lessonProblem15,lessonProblem16, lessonProblem
 const lessonProblemsUnit2Step3 = [lessonProblem20, lessonProblem21, lessonProblem22, lessonProblem23, lessonProblem24, lessonProblem25, lessonProblem26]
 const lessonProblemsUnit3Step1 = [lessonProblem27, lessonProblem28, lessonProblem29, lessonProblem30]
 const lessonProblemsUnit3Step2 = [lessonProblem31, lessonProblem32, lessonProblem33, lessonProblem34]
+const lessonProblemsUnit3Step3 = [lessonProblem35, lessonProblem36, lessonProblem37]
 
 const numbersEqual = (a: readonly number[], b: readonly number[]): boolean => {
   return a.length === b.length && a.every((_, i) => a[i] === b[i]);
@@ -517,6 +561,7 @@ const Lesson: NextPage = () => {
     3: {
       1: lessonProblemsUnit3Step1,
       2: lessonProblemsUnit3Step2,
+      3: lessonProblemsUnit3Step3,
     },
   }
 

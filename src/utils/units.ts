@@ -63,14 +63,14 @@ export const units: readonly Unit[] = [
   },
   {
     unitNumber: 3,
-    description: "Order food and drink",
+    description: "기말고사 화이팅",
     backgroundColor: "bg-[#00cd9c]",
     textColor: "text-[#00cd9c]",
     borderColor: "border-[#00a47d]",
     tiles: [
-      { type: "fast-forward", description: "Order food and drink" },
-      { type: "book", description: "The passport" },
-      { type: "star", description: "Order food and drinks" },
+      { type: "fast-forward", description: "점검 Time" },
+      { type: "book", description: "혼합물의 분리 방법" },
+      { type: "star", description: "열과 우리 생활" },
       { type: "treasure" },
       { type: "book", description: "The honeymoon" },
       { type: "star", description: "Get around in a city" },
