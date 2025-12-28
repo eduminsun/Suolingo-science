@@ -100,8 +100,23 @@ const itemInfo: Record<
   },
 };
 
-// 선택 가능한 아이템 ID 목록 (캐릭터 + 소다)
-const selectableItemIds = ["yangGang", "choco", "sweetPotato", "lemon", "soda"];
+// 선택 가능한 아이템 ID 목록 (모든 아이템 선택 가능)
+const selectableItemIds = [
+  "yangGang",
+  "choco",
+  "sweetPotato",
+  "lemon",
+  "chocolate",
+  "strawberry",
+  "jelly",
+  "creamBrulee",
+  "castella",
+  "soda",
+  "bento",
+  "grill",
+  "applePie",
+  "kiwi",
+];
 
 const Inventory: NextPage = () => {
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);

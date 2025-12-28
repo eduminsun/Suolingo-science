@@ -80,4 +80,19 @@ export const units: readonly Unit[] = [
       { type: "trophy", description: "Unit 2 review" },
     ],
   },
+  {
+    unitNumber: 4,
+    description: "화학반응식 마스터하기",
+    backgroundColor: "bg-[#ff9600]",
+    textColor: "text-[#ff9600]",
+    borderColor: "border-[#d67700]",
+    tiles: [
+      { type: "fast-forward", description: "화학반응식 점검" },
+      { type: "star", description: "화학반응식의 기초" },
+      { type: "book", description: "계수 맞추기" },
+      { type: "star", description: "화학반응식 완성하기" },
+      { type: "treasure" },
+      { type: "trophy", description: "Unit 4 review" },
+    ],
+  },
 ];

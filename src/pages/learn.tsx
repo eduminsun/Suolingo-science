@@ -6,7 +6,16 @@ import choco from "../../public/choco-cookie.png";
 import lemon from "../../public/lemon.png";
 import sweetPotato from "../../public/sweet-potato.png";
 import yangGang from "../../public/yang-gang.png";
+import chocolate from "../../public/chocolate.png";
+import strawberry from "../../public/strawberry.png";
+import jelly from "../../public/jelly.png";
+import creamBrulee from "../../public/cream-brulee.png";
+import castella from "../../public/castella.png";
 import soda from "../../public/soda.png";
+import bento from "../../public/bento.png";
+import grill from "../../public/grill.png";
+import applePie from "../../public/apple-pie.png";
+import kiwi from "../../public/kiwi.png";
 import {
   ActiveBookSvg,
   LockedBookSvg,
@@ -282,6 +291,14 @@ const TileTooltip = ({
     // 필요한 만큼 추가...
   }
   
+  // Unit 4
+  if (unitNumber === 4) {
+    if (index === 0 && tileType === "fast-forward") return "?unit=4&step=1";
+    if (index === 1 && tileType === "star") return "?unit=4&step=2";
+    if (index === 2 && tileType === "book") return "?unit=4&step=3";
+    if (index === 3 && tileType === "star") return "?unit=4&step=4";
+  }
+  
   return "?unit=1&step=1";  // 기본값
 };
 
@@ -493,7 +510,7 @@ const UnitSection = ({ unit }: { unit: Unit }): JSX.Element => {
                                     if (delta > 0) {
                                       increaseLessonsCompleted(delta);
                                     }
-                                    increaseLingots(1);
+                                    increaseLingots(7);
                                   }
                                 }}
                         role="button"
@@ -553,16 +570,35 @@ const getTopBarColors = (
     borderColor: "border-[#46a302]",
   } as const;
 
-  if (scrollY < 680) {
+  if (scrollY < 68) {
     return defaultColors;
-  } else if (scrollY < 1830) {
-    return units[1] ?? defaultColors;
-  } else {
-    return units[2] ?? defaultColors;
   }
+
+  for (const unit of units) {
+    const unitsBeforeThisOne = units.filter(
+      (u) => u.unitNumber < unit.unitNumber,
+    );
+    const tilesBeforeThisUnit = unitsBeforeThisOne.flatMap((u) => u.tiles);
+    const lastTileOfPreviousUnit =
+      tilesBeforeThisUnit[tilesBeforeThisUnit.length - 1];
+    if (!lastTileOfPreviousUnit) continue;
+    const indexOfLastTileOfPreviousUnit = units
+      .flatMap((u) => u.tiles)
+      .indexOf(lastTileOfPreviousUnit);
+    const previousUnitTopY = indexOfLastTileOfPreviousUnit * 16 + 68;
+    const thisUnitsTopY = previousUnitTopY + 16 * unit.tiles.length;
+    if (scrollY >= previousUnitTopY && scrollY < thisUnitsTopY) {
+      return {
+        backgroundColor: unit.backgroundColor,
+        borderColor: unit.borderColor,
+      };
+    }
+  }
+
+  return defaultColors;
 };
 
-// 선택 가능한 아이템 정보 (캐릭터 + 소다)
+// 선택 가능한 아이템 정보 (모든 아이템)
 const selectableItems: Record<
   string,
   { name: string; image: StaticImageData }
@@ -578,6 +614,50 @@ const selectableItems: Record<
   sweetPotato: {
     name: "군고구마 에디션",
     image: sweetPotato,
+  },
+  lemon: {
+    name: "레몬 에디션",
+    image: lemon,
+  },
+  chocolate: {
+    name: "초콜릿",
+    image: chocolate,
+  },
+  strawberry: {
+    name: "딸기",
+    image: strawberry,
+  },
+  jelly: {
+    name: "젤리",
+    image: jelly,
+  },
+  creamBrulee: {
+    name: "크렘 브륄레",
+    image: creamBrulee,
+  },
+  castella: {
+    name: "카스테라",
+    image: castella,
+  },
+  soda: {
+    name: "소다",
+    image: soda,
+  },
+  bento: {
+    name: "도시락",
+    image: bento,
+  },
+  grill: {
+    name: "그릴",
+    image: grill,
+  },
+  applePie: {
+    name: "사과파이",
+    image: applePie,
+  },
+  kiwi: {
+    name: "키위",
+    image: kiwi,
   },
   lemon: {
     name: "레몬 에디션",

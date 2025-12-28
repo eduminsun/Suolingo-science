@@ -15,10 +15,40 @@ import {
 import summerPng from "../../public/summer.png";
 import chromatographyImg from "../../public/chromatography.png";
 import celebrationPng from "../../public/celebration.png";
+import yangGang from "../../public/yang-gang.png";
+import choco from "../../public/choco-cookie.png";
+import sweetPotato from "../../public/sweet-potato.png";
+import lemon from "../../public/lemon.png";
+import chocolate from "../../public/chocolate.png";
+import strawberry from "../../public/strawberry.png";
+import jelly from "../../public/jelly.png";
+import creamBrulee from "../../public/cream-brulee.png";
+import castella from "../../public/castella.png";
+import soda from "../../public/soda.png";
+import bento from "../../public/bento.png";
+import grill from "../../public/grill.png";
+import applePie from "../../public/apple-pie.png";
+import kiwi from "../../public/kiwi.png";
 import { useBoundStore } from "~/hooks/useBoundStore";
 import { useRouter } from "next/router";
 
-
+// 아이템 이미지 매핑
+const itemImages: Record<string, StaticImageData> = {
+  yangGang,
+  choco,
+  sweetPotato,
+  lemon,
+  chocolate,
+  strawberry,
+  jelly,
+  creamBrulee,
+  castella,
+  soda,
+  bento,
+  grill,
+  applePie,
+  kiwi,
+};
 
 // 과학 OX 1: 고체 용해도와 압력
 const lessonProblem1 = {
@@ -434,6 +464,7 @@ const lessonProblem34 = {
   explanation: "설탕의 용해는 용해도와 관련된 현상으로 밀도와는 관련이 없다."
 } as const;
 
+
 // 1. 비열의 정의
 const lessonProblem35 = {
   type: "SELECT_1_OF_3",
@@ -476,6 +507,174 @@ const lessonProblem37 = {
 } as const;
 
 
+// ==========================================
+// Unit 4 - 화학반응식 (Chemical Equations)
+// Step 1: 화학반응식의 기초
+// Step 2: 계수 맞추기
+// Step 3: 화학반응식 완성하기
+// ==========================================
+
+// ========== Step 1: 화학반응식의 기초 ==========
+
+// 문제 1: 화학반응식 읽기
+const lessonProblem38 = {
+  type: "SELECT_1_OF_3",
+  question: "화학반응식 2H₂ + O₂ → 2H₂O에서 반응물은?",
+  answers: [
+    { icon: <></>, name: "H₂O" },
+    { icon: <></>, name: "H₂와 O₂" },
+    { icon: <></>, name: "O₂만" },
+  ],
+  correctAnswer: 1,
+} as const;
+
+// 문제 2: 계수의 의미
+const lessonProblem39 = {
+  type: "SELECT_1_OF_3",
+  question: "화학반응식에서 계수는 무엇을 나타내는가?",
+  answers: [
+    { icon: <></>, name: "원자 개수 비" },
+    { icon: <></>, name: "분자 개수 비" },
+    { icon: <></>, name: "질량의 비" },
+  ],
+  correctAnswer: 1,
+} as const;
+
+// 문제 3: 화살표의 의미
+const lessonProblem40 = {
+  type: "SELECT_1_OF_3",
+  question: "화학반응식에서 화살표(→)의 의미는?",
+  answers: [
+    { icon: <></>, name: "반응물이 생성물로 변한다" },
+    { icon: <></>, name: "반응물과 생성물이 같다" },
+    { icon: <></>, name: "생성물이 반응물로 변한다" },
+  ],
+  correctAnswer: 0,
+} as const;
+
+// 문제 4: 화학반응식의 법칙
+const lessonProblem41 = {
+  type: "SELECT_1_OF_3",
+  question: "화학반응식에서 반응 전후에 동일하지 않은 것은?",
+  answers: [
+    { icon: <></>, name: "원자의 종류" },
+    { icon: <></>, name: "원자의 개수" },
+    { icon: <></>, name: "분자의 개수" },
+  ],
+  correctAnswer: 2,
+} as const;
+
+// ========== Step 2: 계수 맞추기 ==========
+
+// 문제 5: 간단한 계수 맞추기 1
+const lessonProblem42 = {
+  type: "WRITE_IN_ENGLISH",
+  question: "다음 화학반응식의 빈칸에 알맞은 계수를 순서대로 고르시오. ( ㄱ )H₂ + ( ㄴ )O₂ → ( ㄷ )H₂O",
+  answerTiles: ["1", "2", "2", "3", "4"],
+  correctAnswer: [1, 0, 2], // 2, 1, 2
+} as const;
+
+// 문제 6: 원자 개수 세기
+const lessonProblem43 = {
+  type: "SELECT_1_OF_3",
+  question: "2H₂O에서 H 원자의 개수는?",
+  answers: [
+    { icon: <></>, name: "2개" },
+    { icon: <></>, name: "4개" },
+    { icon: <></>, name: "6개" },
+  ],
+  correctAnswer: 1, // 2×2 = 4개
+} as const;
+
+// 문제 7: 계수 맞추기 2
+const lessonProblem44 = {
+  type: "WRITE_IN_ENGLISH",
+  question: "다음 화학반응식의 빈칸에 알맞은 계수를 순서대로 고르시오. ( ㄱ )C + ( ㄴ )O₂ → ( ㄷ )CO₂",
+  answerTiles: ["1", "1", "1", "2", "3", "4"],
+  correctAnswer: [0, 1, 2], // 1, 1, 1
+} as const;
+
+// 문제 8: 반응 전후 원자 개수 비교
+const lessonProblem45 = {
+  type: "SELECT_1_OF_3",
+  question: "화학반응 2Mg + O₂ → 2MgO에서 반응 전 O 원자는 몇 개인가?",
+  answers: [
+    { icon: <></>, name: "1개" },
+    { icon: <></>, name: "2개" },
+    { icon: <></>, name: "3개" },
+  ],
+  correctAnswer: 1, // O₂이므로 2개
+} as const;
+
+// 문제 9: 계수 맞추기 3 (질소와 수소)
+const lessonProblem46 = {
+  type: "WRITE_IN_ENGLISH",
+  question: "다음 화학반응식의 빈칸에 알맞은 계수를 순서대로 고르시오. ( ㄱ )N₂ + ( ㄴ )H₂ → ( ㄷ )NH₃",
+  answerTiles: ["1", "2", "3", "4", "5", "6"],
+  correctAnswer: [0, 2, 1], // 1, 3, 2
+} as const;
+
+// ========== Step 3: 화학반응식 완성하기 ==========
+
+// 문제 10: 빈칸에 들어갈 화학식
+const lessonProblem47 = {
+  type: "SELECT_1_OF_3",
+  question: "다음 화학반응식의 빈칸에 들어갈 화학식은? CH₄ + 2O₂ → ( ) + 2H₂O",
+  answers: [
+    { icon: <></>, name: "CO" },
+    { icon: <></>, name: "CO₂" },
+    { icon: <></>, name: "C₂O" },
+  ],
+  correctAnswer: 1, // CO₂
+} as const;
+
+// 문제 11: 연소 반응
+const lessonProblem48 = {
+  type: "SELECT_1_OF_3",
+  question: "메테인(CH₄)의 연소 반응에서 생성물은?",
+  answers: [
+    { icon: <></>, name: "CO₂와 H₂O" },
+    { icon: <></>, name: "CO와 H₂" },
+    { icon: <></>, name: "C와 H₂O" },
+  ],
+  correctAnswer: 0,
+} as const;
+
+// 문제 12: 복잡한 계수 맞추기
+const lessonProblem49 = {
+  type: "WRITE_IN_ENGLISH",
+  question: "다음 화학반응식의 빈칸에 알맞은 계수를 순서대로 고르시오. ( ㄱ )Fe + ( ㄴ )O₂ → ( ㄷ )Fe₂O₃",
+  answerTiles: ["1", "2", "3", "4"],
+  correctAnswer: [3, 2, 1], // 4, 3, 2
+} as const;
+
+// 문제 13: 원자 개수 세기 (복잡)
+const lessonProblem50 = {
+  type: "SELECT_1_OF_3",
+  question: "3Fe₂O₃에서 Fe 원자의 개수는?",
+  answers: [
+    { icon: <></>, name: "3개" },
+    { icon: <></>, name: "6개" },
+    { icon: <></>, name: "9개" },
+  ],
+  correctAnswer: 1, // 3×2 = 6개
+} as const;
+
+// 문제 14: 화학반응식 완성 (종합)
+const lessonProblem51 = {
+  type: "SELECT_1_OF_3",
+  question: "다음 화학반응식이 올바르게 완성된 것은?",
+  answers: [
+    { icon: <></>, name: "2Na + H₂O → 2NaOH + H₂" },
+    { icon: <></>, name: "Na + 2H₂O → NaOH + H₂" },
+    { icon: <></>, name: "2Na + 2H₂O → 2NaOH + H₂" },
+  ],
+  correctAnswer: 2, // 2Na + 2H₂O → 2NaOH + H₂
+} as const;
+
+
+
+
 // 단계별 문제 그룹
 const lessonProblemsUnit1Step1 = [lessonProblem1, lessonProblem2, lessonProblem3];
 const lessonProblemsUnit1Step2 = [lessonProblem4, lessonProblem5, lessonProblem6, lessonProblem7, lessonProblem8];
@@ -486,6 +685,10 @@ const lessonProblemsUnit2Step3 = [lessonProblem20, lessonProblem21, lessonProble
 const lessonProblemsUnit3Step1 = [lessonProblem27, lessonProblem28, lessonProblem29, lessonProblem30]
 const lessonProblemsUnit3Step2 = [lessonProblem31, lessonProblem32, lessonProblem33, lessonProblem34]
 const lessonProblemsUnit3Step3 = [lessonProblem35, lessonProblem36, lessonProblem37]
+const lessonProblemsUnit4Step1 = [lessonProblem38, lessonProblem39, lessonProblem40, lessonProblem41]
+const lessonProblemsUnit4Step2 = [lessonProblem42, lessonProblem43, lessonProblem44, lessonProblem45, lessonProblem46]
+const lessonProblemsUnit4Step3 = [lessonProblem47, lessonProblem48, lessonProblem49, lessonProblem50]
+const lessonProblemsUnit4Step4 = [lessonProblem51]
 
 const numbersEqual = (a: readonly number[], b: readonly number[]): boolean => {
   return a.length === b.length && a.every((_, i) => a[i] === b[i]);
@@ -559,6 +762,12 @@ const Lesson: NextPage = () => {
       1: lessonProblemsUnit3Step1,
       2: lessonProblemsUnit3Step2,
       3: lessonProblemsUnit3Step3,
+    },
+    4: {
+      1: lessonProblemsUnit4Step1,
+      2: lessonProblemsUnit4Step2,
+      3: lessonProblemsUnit4Step3,
+      4: lessonProblemsUnit4Step4,
     },
   }
 
@@ -1091,6 +1300,16 @@ const ProblemWriteInEnglish = ({
 }) => {
   const { question, correctAnswer, answerTiles } = problem;
 
+  // 선택된 아이템 가져오기
+  const [selectedItem, setSelectedItem] = useState<StaticImageData>(summerPng);
+
+  useEffect(() => {
+    const savedItem = localStorage.getItem("selectedCharacter");
+    if (savedItem && itemImages[savedItem]) {
+      setSelectedItem(itemImages[savedItem]!);
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col gap-5 px-4 py-5 sm:px-0 sm:py-0">
       <div className="flex grow flex-col items-center gap-5">
@@ -1109,7 +1328,7 @@ const ProblemWriteInEnglish = ({
 
           <div className="w-full">
             <div className="flex items-center gap-2 px-2">
-              <Image src={summerPng} alt="" width={92} height={115} />
+              <Image src={selectedItem} alt="" width={92} height={115} />
               <div className="relative ml-2 w-fit rounded-2xl border-2 border-gray-200 p-4">
                 {question}
                 <div
