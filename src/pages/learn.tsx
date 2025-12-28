@@ -659,14 +659,6 @@ const selectableItems: Record<
     name: "키위",
     image: kiwi,
   },
-  lemon: {
-    name: "레몬 에디션",
-    image: lemon,
-  },
-  soda: {
-    name: "소다",
-    image: soda,
-  },
 };
 
 const isSelectableKey = (v: string | null): v is keyof typeof selectableItems => {
