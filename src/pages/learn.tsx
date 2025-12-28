@@ -683,6 +683,17 @@ const Learn: NextPage = () => {
     const savedItem = localStorage.getItem("selectedCharacter");
     if (isSelectableKey(savedItem)) {
       setSelectedCharacter(savedItem);
+    } else {
+      // 선택된 아이템이 없으면 그릴을 기본으로 설정
+      setSelectedCharacter("grill");
+      localStorage.setItem("selectedCharacter", "grill");
+    }
+    
+    // 구매한 아이템이 없으면 기본 아이템 설정
+    const storedItems = localStorage.getItem("purchasedItems");
+    if (!storedItems) {
+      const defaultItems = ["bento", "soda", "grill", "jelly", "sweetPotato"];
+      localStorage.setItem("purchasedItems", JSON.stringify(defaultItems));
     }
   }, []);
 

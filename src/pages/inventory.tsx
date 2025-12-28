@@ -130,15 +130,26 @@ const Inventory: NextPage = () => {
         const parsed = JSON.parse(stored) as string[];
         setPurchasedItems(parsed);
       } catch {
-        // JSON 파싱 실패 시 빈 배열로 설정
-        setPurchasedItems([]);
+        // JSON 파싱 실패 시 기본 아이템으로 설정
+        const defaultItems = ["bento", "soda", "grill", "jelly", "sweetPotato"];
+        setPurchasedItems(defaultItems);
+        localStorage.setItem("purchasedItems", JSON.stringify(defaultItems));
       }
+    } else {
+      // 로컬 스토리지가 비어있으면 기본 아이템 설정
+      const defaultItems = ["bento", "soda", "grill", "jelly", "sweetPotato"];
+      setPurchasedItems(defaultItems);
+      localStorage.setItem("purchasedItems", JSON.stringify(defaultItems));
     }
     
     // 로컬 스토리지에서 선택된 아이템 불러오기
     const savedItem = localStorage.getItem("selectedCharacter");
     if (savedItem && selectableItemIds.includes(savedItem)) {
       setSelectedCharacter(savedItem);
+    } else {
+      // 선택된 아이템이 없으면 그릴을 기본으로 설정
+      setSelectedCharacter("grill");
+      localStorage.setItem("selectedCharacter", "grill");
     }
   }, []);
 
