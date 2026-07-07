@@ -13,7 +13,7 @@ This project applies the mechanics that make Duolingo effective — streaks, bit
 - Deployed with Vercel
 
 ## Credits
-This project is a fork of Duolingo by 000 — a Duolingo web app clone. All core app architecture comes from the original project; the science content, characters, and adaptations described above are my own work.
+This project is based on [react-duolingo](https://github.com/bryanjenningz/react-duolingo) by [Bryan Jennings](https://github.com/bryanjenningz) — a Duolingo web app clone, licensed under the [MIT License](./LICENSE). All core app architecture comes from the original project; the science content, characters, and adaptations described above are my own work.
 
 ## Author
 - Minsun Cho (minsunrose@naver.com, moon05@snu.ac.kr)
